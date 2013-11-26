@@ -15,7 +15,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import com.example.test.app.jonas.R;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import de.fuelmeup.rest.Car;

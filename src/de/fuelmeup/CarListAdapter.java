@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.test.app.jonas.R;
-
 import de.fuelmeup.rest.Car;
 
 /**
