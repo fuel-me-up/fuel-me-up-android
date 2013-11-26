@@ -2,6 +2,7 @@ package de.fuelmeup;
 
 import java.util.ArrayList;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -51,10 +52,9 @@ public class CarListFragment extends ListFragment {
 		CarListAdapter adapter = new CarListAdapter(getActivity(), mCars);
 		setListAdapter(adapter);
 		Client restClient = Client.getInstance();
-		restClient.getCars(Client.Provider.DRIVE_NOW, Client.City.HAMBURG,
-				mDNCarResponseHandler);
-		restClient.getCars(Client.Provider.CAR2GO, Client.City.HAMBURG,
-				mC2GCarResponseHandler);
+		restClient.getCars(Client.Provider.FUEL_ME_UP, Client.City.HAMBURG,
+				mFMUCarResponseHandler);
+
 	}
 
 	public void addCars(ArrayList<Car> cars) {
@@ -76,11 +76,11 @@ public class CarListFragment extends ListFragment {
 
 	}
 
-	private JsonHttpResponseHandler mDNCarResponseHandler = new JsonHttpResponseHandler() {
+	private JsonHttpResponseHandler mFMUCarResponseHandler = new JsonHttpResponseHandler() {
 		@Override
-		public void onSuccess(JSONObject jsonResponse) {
+		public void onSuccess(JSONArray jsonResponse) {
 			try {
-				ArrayList<Car> cars = Car.getCarsFromDNJSONObject(jsonResponse);
+				ArrayList<Car> cars = Car.getCarsFromFMUJSONObject(jsonResponse);
 				addCars(cars);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
@@ -93,22 +93,4 @@ public class CarListFragment extends ListFragment {
 		}
 
 	};
-	private JsonHttpResponseHandler mC2GCarResponseHandler = new JsonHttpResponseHandler() {
-		@Override
-		public void onSuccess(JSONObject jsonResponse) {
-			try {
-				ArrayList<Car> cars = Car.getCarsFromC2GJSONObject(jsonResponse);
-				addCars(cars);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-		@Override
-		public void onFailure(Throwable e, JSONObject errorResponse) {
-		}
-
-	};	
-
 }

@@ -2,6 +2,7 @@ package de.fuelmeup;
 
 import java.util.ArrayList;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,10 +39,10 @@ public class CarMapFragment extends SupportMapFragment implements
 		super.onActivityCreated(savedInstanceState);
 		setRetainInstance(true);
 		Client restClient = Client.getInstance();
-		restClient.getCars(Client.Provider.DRIVE_NOW, Client.City.HAMBURG,
-				mDNCarResponseHandler);
-		restClient.getCars(Client.Provider.CAR2GO, Client.City.HAMBURG,
-				mC2GCarResponseHandler);
+		/*restClient.getCars(Client.Provider.DRIVE_NOW, Client.City.HAMBURG,
+				mDNCarResponseHandler);*/ 
+		restClient.getCars(Client.Provider.FUEL_ME_UP, Client.City.HAMBURG,
+				mFMUCarResponseHandler);
 		// Get the location manager
 		locationManager = (LocationManager) getActivity().getSystemService(
 				Context.LOCATION_SERVICE);
@@ -68,16 +69,14 @@ public class CarMapFragment extends SupportMapFragment implements
 			try {
 				ArrayList<Car> cars = Car.getCarsFromDNJSONObject(jsonResponse);
 				for (Car car : cars) {
-					if (car.getmFuel() < 30) {
-						getMap().addMarker(
-								new MarkerOptions()
-										.position(
-												new LatLng(car.getmLat(), car
-														.getmLng()))
-										.title(car.getmName())
-										.icon(BitmapDescriptorFactory
-												.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
-					}
+					getMap().addMarker(
+							new MarkerOptions()
+									.position(
+											new LatLng(car.getmLat(), car
+													.getmLng()))
+									.title(car.getmName())
+									.icon(BitmapDescriptorFactory
+											.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
@@ -91,23 +90,21 @@ public class CarMapFragment extends SupportMapFragment implements
 
 	};
 
-	private JsonHttpResponseHandler mC2GCarResponseHandler = new JsonHttpResponseHandler() {
+	private JsonHttpResponseHandler mFMUCarResponseHandler = new JsonHttpResponseHandler() {
 		@Override
-		public void onSuccess(JSONObject jsonResponse) {
+		public void onSuccess(JSONArray jsonResponse) {
 			try {
 				ArrayList<Car> cars = Car
-						.getCarsFromC2GJSONObject(jsonResponse);
+						.getCarsFromFMUJSONObject(jsonResponse);
 				for (Car car : cars) {
-					if (car.getmFuel() < 30) {
-						getMap().addMarker(
-								new MarkerOptions()
-										.position(
-												new LatLng(car.getmLat(), car
-														.getmLng()))
-										.title(car.getmName())
-										.icon(BitmapDescriptorFactory
-												.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-					}
+					getMap().addMarker(
+							new MarkerOptions()
+									.position(
+											new LatLng(car.getmLng(), car
+													.getmLat()))
+									.title(car.getmName())
+									.icon(BitmapDescriptorFactory
+											.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block

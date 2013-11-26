@@ -33,6 +33,11 @@ public class Car {
 	private final static String DN_POSITION_LAT = "latitude";
 	private final static String DN_POSITION_LNG = "longitude";
 	private final static String DN_FUEL = "fuelState";
+	
+	private final static String FMU_FUEL = "fuel_level";
+	private final static String FMU_POSITION_OBJ = "coordinate";
+	private final static String FMU_POSITION_LAT = "latitude";
+	private final static String FMU_POSITION_LNG = "longitude";
 
 
 
@@ -109,6 +114,33 @@ public class Car {
 			String name = jsonCar.getString(NAME);;
 			String vin = jsonCar.getString(VIN);;	
 			Car car = new Car(address, lng, lat, engineType, exterior, fuel, interior, name, vin);
+			cars.add(car);
+		}
+		return cars;
+	}
+	
+	/**
+	 * Create arraylist with Car objects from JSONObject
+	 * @param jsonObject car data
+	 * @return carList
+	 * @throws JSONException
+	 */
+	public static ArrayList<Car> getCarsFromFMUJSONObject(JSONArray jsonArray) throws JSONException{
+		ArrayList<Car> cars = new  ArrayList<Car>();
+		for(int i=0; i<jsonArray.length(); i++) {
+			JSONObject jsonCar = jsonArray.getJSONObject(i);
+			JSONObject coordObject = jsonCar.getJSONObject(FMU_POSITION_OBJ);
+			double lng = coordObject.getDouble(FMU_POSITION_LAT);
+			double lat = coordObject.getDouble(FMU_POSITION_LNG);
+			String address = coordObject.getString(ADDRESS);
+			int fuel = jsonCar.getInt(FMU_FUEL);
+			/*String engineType = jsonCar.getString(ENGINE_TYPE);
+			String exterior = jsonCar.getString(EXTERIOR);
+			int fuel = jsonCar.getInt(FUEL);
+			String interior = jsonCar.getString(INTERIOR);
+			String name = jsonCar.getString(NAME);
+			String vin = jsonCar.getString(VIN);*/
+			Car car = new Car(address, lng, lat, "", "", fuel, "", "", "");
 			cars.add(car);
 		}
 		return cars;
