@@ -38,8 +38,10 @@ public class Car {
 	private final static String FMU_POSITION_OBJ = "coordinate";
 	private final static String FMU_POSITION_LAT = "latitude";
 	private final static String FMU_POSITION_LNG = "longitude";
-
-
+	private final static String FMU_PROVIDER = "provider";
+	
+	public final static String FMU_PROVIDER_DN = "drive-now";
+	public final static String FMU_PROVIDER_C2G = "car2go";
 
 
 	private String mAddress;
@@ -51,10 +53,12 @@ public class Car {
 	private String mInterior;
 	private String mName;
 	private String mVin;
+	private String mProvider;
+
 	
 	public Car(String mAddress, double mLng, double mLat, String mEngineType,
 			String mExterior, int mFuel, String mInterior, String mName,
-			String mVin) {
+			String mVin, String mProvider) {
 		super();
 		this.mAddress = mAddress;
 		this.mLng = mLng;
@@ -65,6 +69,7 @@ public class Car {
 		this.mInterior = mInterior;
 		this.mName = mName;
 		this.mVin = mVin;
+		this.mProvider = mProvider;
 	}
 	
 	/**
@@ -86,7 +91,7 @@ public class Car {
 			double lng = jsonCarPos.getDouble(DN_POSITION_LAT);
 			double lat = jsonCarPos.getDouble(DN_POSITION_LNG);
 			int fuel = jsonCar.getInt(DN_FUEL);
-			Car car = new Car("", lat, lng, "", "", fuel, "", "", "");
+			Car car = new Car("", lat, lng, "", "", fuel, "", "", "",FMU_PROVIDER_DN);
 			cars.add(car);
 		}
 		return cars;
@@ -113,7 +118,7 @@ public class Car {
 			String interior = jsonCar.getString(INTERIOR);;
 			String name = jsonCar.getString(NAME);;
 			String vin = jsonCar.getString(VIN);;	
-			Car car = new Car(address, lng, lat, engineType, exterior, fuel, interior, name, vin);
+			Car car = new Car(address, lng, lat, engineType, exterior, fuel, interior, name, vin, FMU_PROVIDER_C2G);
 			cars.add(car);
 		}
 		return cars;
@@ -134,13 +139,13 @@ public class Car {
 			double lat = coordObject.getDouble(FMU_POSITION_LNG);
 			String address = coordObject.getString(ADDRESS);
 			int fuel = jsonCar.getInt(FMU_FUEL);
-			/*String engineType = jsonCar.getString(ENGINE_TYPE);
-			String exterior = jsonCar.getString(EXTERIOR);
+			String provider = jsonCar.getString(FMU_PROVIDER);
+			/*String exterior = jsonCar.getString(EXTERIOR);
 			int fuel = jsonCar.getInt(FUEL);
 			String interior = jsonCar.getString(INTERIOR);
 			String name = jsonCar.getString(NAME);
 			String vin = jsonCar.getString(VIN);*/
-			Car car = new Car(address, lng, lat, "", "", fuel, "", "", "");
+			Car car = new Car(address, lng, lat, "", "", fuel, "", "", "", provider);
 			cars.add(car);
 		}
 		return cars;
@@ -205,6 +210,14 @@ public class Car {
 	public void setmVin(String mVin) {
 		this.mVin = mVin;
 	}
+	public String getmProvider() {
+		return mProvider;
+	}
+
+	public void setmProvider(String mProvider) {
+		this.mProvider = mProvider;
+	}
+
 	
 	
 	

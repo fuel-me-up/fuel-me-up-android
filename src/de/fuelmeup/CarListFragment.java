@@ -6,8 +6,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ListFragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +30,6 @@ import de.fuelmeup.rest.Client;
  * 
  */
 public class CarListFragment extends ListFragment {
-	private ArrayList<Car> mCars = new ArrayList<Car>();
 	private RelativeLayout mCarListLayout;
 	private Object lock = new Object();
 
@@ -44,22 +45,26 @@ public class CarListFragment extends ListFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+		getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
 		ProgressBar progressView = (ProgressBar) mCarListLayout
 				.findViewById(R.id.progress);
 		progressView.setVisibility(View.VISIBLE);
-		mCars = new ArrayList<Car>();
-		CarListAdapter adapter = new CarListAdapter(getActivity(), mCars);
+		CarListAdapter adapter = new CarListAdapter(getActivity(), new ArrayList<Car>());
 		setListAdapter(adapter);
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		int defaultMaxFuelLevel = Integer.parseInt(getString(R.string.default_max_fuel_level));
+		int maxFuelLevelC2G =  settings.getInt(getString(R.string.max_fuel_preference_c2g), defaultMaxFuelLevel);
+		
 		Client restClient = Client.getInstance();
-		restClient.getCars(Client.Provider.FUEL_ME_UP, Client.City.HAMBURG,
+		restClient.getCars(Client.Provider.FUEL_ME_UP, Client.City.HAMBURG, maxFuelLevelC2G,
 				mFMUCarResponseHandler);
 
 	}
 
-	public void addCars(ArrayList<Car> cars) {
+	public void setCarsOnMap(ArrayList<Car> cars) {
 		synchronized(lock) {
-			mCars.addAll(cars);
 			CarListAdapter adapter = (CarListAdapter) getListAdapter();
+			adapter.clear();
 			for (Car car : cars) {
 				adapter.addItem(car);
 			}
@@ -80,7 +85,7 @@ public class CarListFragment extends ListFragment {
 		public void onSuccess(JSONArray jsonResponse) {
 			try {
 				ArrayList<Car> cars = Car.getCarsFromFMUJSONObject(jsonResponse);
-				addCars(cars);
+				setCarsOnMap(cars);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

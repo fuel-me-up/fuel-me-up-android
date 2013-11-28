@@ -54,16 +54,16 @@ public class Client {
 	 * @param city
 	 * @param responseHandler Handler for response data
 	 */
-	public void getCars(Provider provider, City  city, AsyncHttpResponseHandler responseHandler){
+	public void getCars(Provider provider, City  city, int maxFuelLevel, AsyncHttpResponseHandler responseHandler){
 		String url = null;
 		switch(provider){
 			case CAR2GO:
 				switch(city) {
 					case HAMBURG:
-						url = buildRequestURL(provider, C2G_HAMBURG_STRING, MAX_FUEL_LEVEL);
+						url = buildRequestURL(provider, C2G_HAMBURG_STRING, maxFuelLevel);
 						break;
 					default:
-						url = buildRequestURL(provider, C2G_HAMBURG_STRING, MAX_FUEL_LEVEL);
+						url = buildRequestURL(provider, C2G_HAMBURG_STRING, maxFuelLevel);
 						break;
 				}
 				mHttpClient.get(url, responseHandler);
@@ -71,10 +71,10 @@ public class Client {
 			case DRIVE_NOW:
 				switch(city) {
 				case HAMBURG:
-					url = buildRequestURL(provider, DN_HAMBURG_STRING, MAX_FUEL_LEVEL);
+					url = buildRequestURL(provider, DN_HAMBURG_STRING, maxFuelLevel);
 					break;
 				default:
-					url = buildRequestURL(provider, DN_HAMBURG_STRING, MAX_FUEL_LEVEL);
+					url = buildRequestURL(provider, DN_HAMBURG_STRING, maxFuelLevel);
 					break;
 				}
 				mHttpClient.get(url, responseHandler);
@@ -82,10 +82,10 @@ public class Client {
 			case FUEL_ME_UP:
 				switch(city) {
 					case HAMBURG:
-						url = buildRequestURL(provider, C2G_HAMBURG_STRING, MAX_FUEL_LEVEL);
+						url = buildRequestURL(provider, C2G_HAMBURG_STRING, maxFuelLevel);
 						break;
 					default:
-						url = buildRequestURL(provider, C2G_HAMBURG_STRING, MAX_FUEL_LEVEL);
+						url = buildRequestURL(provider, C2G_HAMBURG_STRING, maxFuelLevel);
 						break;
 				}
 				mHttpClient.get(url, responseHandler);

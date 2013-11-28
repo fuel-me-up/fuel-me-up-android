@@ -3,8 +3,13 @@
 
     <string name="app_name">FuelMeUp</string>
     <string name="action_settings">Settings</string>
+    <string name="action_refresh">Refresh</string>
     <string name="address_label">Addresse: </string>
     <string name="name_label">Kennzeichen: </string>
     <string name="fuel_label">Benzinstand: </string>
-
+    <string name="max_fuel_preference_dn">maxFuelPrefDN</string>
+    <string name="max_fuel_preference_c2g">maxFuelPrefC2G</string>
+    <string name="max_fuel_preference_dn_caption">Set maximum fuel level for drive-now</string>
+    <string name="max_fuel_preference_c2g_caption">Set maximum fuel level for car2go</string>
+	<string name="default_max_fuel_level">25</string>
 </resources>

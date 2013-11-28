@@ -71,6 +71,11 @@ public class CarListAdapter extends BaseAdapter {
 	public long getItemId(int pos) {
 		return mCars.get(pos).getmName().hashCode();
 	}
+	
+	public void clear(){
+		mCars.clear();
+		this.notifyDataSetChanged();
+	}
 
 	public void addItem(Car car) {
 		mCars.add(car);
