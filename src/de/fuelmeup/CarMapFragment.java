@@ -38,14 +38,13 @@ import de.fuelmeup.rest.Client;
  * @author jonas
  * 
  */
-public class CarMapFragment extends MapFragment implements  OnMyLocationChangeListener {
+public class CarMapFragment extends MapFragment implements OnMyLocationChangeListener, BaseFragment {
 
 	private static final String MAPS_REQUEST_URL = "http://maps.google.com/maps?&daddr=%s,%s";
 	private boolean notLocalized = true;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		refreshMap();
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
@@ -56,6 +55,7 @@ public class CarMapFragment extends MapFragment implements  OnMyLocationChangeLi
 		setHasOptionsMenu(true);
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
 		initMap();
+		refreshMap();
 	}
 
 	@Override
@@ -154,5 +154,11 @@ public class CarMapFragment extends MapFragment implements  OnMyLocationChangeLi
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	@Override
+	public void onResumeFragment() {
+		System.out.println("onRESUMEFRAGMENT");
+		refreshMap();
 	}
 }

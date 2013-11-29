@@ -2,6 +2,8 @@ package de.fuelmeup;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentManager.OnBackStackChangedListener;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
@@ -16,7 +18,6 @@ import android.view.MenuItem;
  */
 public class MainActivity extends Activity {
 
-	public final static String TAG_CAR_LIST = "carlist";
 	public final String TAG_CAR_MAP = "carmap";
 
 	@Override
@@ -28,8 +29,9 @@ public class MainActivity extends Activity {
 		Fragment fragment = new CarMapFragment();
 		FragmentTransaction transaction = getFragmentManager()
 				.beginTransaction();
-		transaction.replace(R.id.tab_container, fragment);
+		transaction.replace(R.id.tab_container, fragment, TAG_CAR_MAP);
 		transaction.commit();
+		getFragmentManager().addOnBackStackChangedListener(getListener());
 	}
 
 	@Override
@@ -42,19 +44,33 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.action_settings:
-				PreferenceFragment newFragment = new SettingsFragment();
-				FragmentTransaction transaction = getFragmentManager()
-						.beginTransaction();
-				transaction.replace(android.R.id.content, newFragment);
-				transaction.addToBackStack(null);
-				transaction.commit();
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
+		case R.id.action_settings:
+			PreferenceFragment newFragment = new SettingsFragment();
+			FragmentTransaction transaction = getFragmentManager()
+					.beginTransaction();
+			transaction.replace(android.R.id.content, newFragment);
+			transaction.addToBackStack(null);
+			transaction.commit();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 
+	private OnBackStackChangedListener getListener() {
+		OnBackStackChangedListener result = new OnBackStackChangedListener() {
+			public void onBackStackChanged() {
+				FragmentManager manager = getFragmentManager();
+				if (manager != null) {
+					BaseFragment currFragment = (BaseFragment) manager
+							.findFragmentByTag(TAG_CAR_MAP);
+					if(currFragment != null)
+						currFragment.onResumeFragment();
+				}
+			}
+		};
 
-	
+		return result;
+	}
+
 }
