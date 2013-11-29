@@ -33,9 +33,9 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 		getActionBar().setDisplayHomeAsUpEnabled(false);
 
 		// for each of the sections in the app, add a tab to the action bar.
-		actionBar.addTab(actionBar.newTab().setText("tab1")
+		actionBar.addTab(actionBar.newTab().setText(getString(R.string.map))
 				.setTabListener(this));
-		actionBar.addTab(actionBar.newTab().setText("tab2")
+		actionBar.addTab(actionBar.newTab().setText(getString(R.string.list))
 				.setTabListener(this));
 	}
 
@@ -48,23 +48,17 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle item selection
 		switch (item.getItemId()) {
-		case R.id.action_settings:
-			// Create new fragment and transaction
-			PreferenceFragment newFragment = new SettingsFragment();
-			FragmentTransaction transaction = getFragmentManager()
-					.beginTransaction();
-			// Replace whatever is in the fragment_container view with this
-			// fragment,
-			// and add the transaction to the back stack
-			transaction.replace(android.R.id.content, newFragment);
-			transaction.addToBackStack(null);
-			// Commit the transaction
-			transaction.commit();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
+			case R.id.action_settings:
+				PreferenceFragment newFragment = new SettingsFragment();
+				FragmentTransaction transaction = getFragmentManager()
+						.beginTransaction();
+				transaction.replace(android.R.id.content, newFragment);
+				transaction.addToBackStack(null);
+				transaction.commit();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
 
@@ -77,11 +71,11 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
 		Fragment fragment = null;
-		String tag = "";
+		String tag;
 		FragmentTransaction transaction = getFragmentManager()
 				.beginTransaction();
 
-		// at first detach currently visible fragment from ui
+		// at first detach currently visible fragment from UI
 		Fragment currShowingFragment = getFragmentManager().findFragmentById(
 				R.id.tab_container);
 		if (currShowingFragment != null)

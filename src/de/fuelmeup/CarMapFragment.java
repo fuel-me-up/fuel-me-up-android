@@ -6,21 +6,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -35,25 +40,48 @@ import de.fuelmeup.rest.Client;
  */
 public class CarMapFragment extends MapFragment implements  OnMyLocationChangeListener {
 
+	private static final String MAPS_REQUEST_URL = "http://maps.google.com/maps?&daddr=%s,%s";
+	private boolean notLocalized = true;
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		refreshMap();
+		return super.onCreateView(inflater, container, savedInstanceState);
+	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		setRetainInstance(true);
 		setHasOptionsMenu(true);
-		getMap().getUiSettings().setMyLocationButtonEnabled(true);
-		getMap().setMyLocationEnabled(true);
-		getMap().setOnMyLocationChangeListener(this);
-		refreshMap();
-		 getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
-		/*	CameraUpdate myLoc = CameraUpdateFactory.newCameraPosition(
-		            new CameraPosition.Builder().zoom(13).build());
-		    getMap().moveCamera(myLoc);*/
+		getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+		initMap();
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
+	}
+	
+	private void initMap() {
+		getMap().getUiSettings().setMyLocationButtonEnabled(true);
+		getMap().setMyLocationEnabled(true);
+		if(notLocalized)
+			getMap().setOnMyLocationChangeListener(this);
+		notLocalized = false;
+		getMap().setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
+			@Override
+			public void onInfoWindowClick(Marker marker) {
+				LatLng markerPosition = marker.getPosition();
+				sendIntentForNavigation(markerPosition);
+			}
+		});
+	}
+	
+	private void sendIntentForNavigation(LatLng location){
+		String uri = String.format(MAPS_REQUEST_URL, location.latitude, location.longitude);
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+		startActivity(intent);
 	}
 
 	private void refreshMap() {
@@ -70,32 +98,6 @@ public class CarMapFragment extends MapFragment implements  OnMyLocationChangeLi
 				maxFuelLevelC2G, mFMUCarResponseHandler);
 	}
 
-	private JsonHttpResponseHandler mDNCarResponseHandler = new JsonHttpResponseHandler() {
-		@Override
-		public void onSuccess(JSONObject jsonResponse) {
-			try {
-				ArrayList<Car> cars = Car.getCarsFromDNJSONObject(jsonResponse);
-				for (Car car : cars) {
-					getMap().addMarker(
-							new MarkerOptions()
-									.position(
-											new LatLng(car.getmLat(), car
-													.getmLng()))
-									.title(car.getmName())
-									.icon(BitmapDescriptorFactory
-											.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
-				}
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-		@Override
-		public void onFailure(Throwable e, JSONObject errorResponse) {
-		}
-	};
-	
 	@Override
 	public void onMyLocationChange(Location lastKnownLocation) {
 	    CameraUpdate myLoc = CameraUpdateFactory.newCameraPosition(
@@ -126,11 +128,13 @@ public class CarMapFragment extends MapFragment implements  OnMyLocationChangeLi
 							carMarker
 									.icon(BitmapDescriptorFactory
 											.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
+						String providerString = getString(R.string.provider_and_plate);
+						carMarker.title(String.format(providerString, car.getmProvider(), car.getmName()))
+                        .snippet(getString(R.string.fuel_label)+car.getmFuel());
 						getMap().addMarker(carMarker);
 					}
 				}
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

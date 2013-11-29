@@ -39,6 +39,7 @@ public class Car {
 	private final static String FMU_POSITION_LAT = "latitude";
 	private final static String FMU_POSITION_LNG = "longitude";
 	private final static String FMU_PROVIDER = "provider";
+	private final static String FMU_NAME = "license_plate";
 	
 	public final static String FMU_PROVIDER_DN = "drive-now";
 	public final static String FMU_PROVIDER_C2G = "car2go";
@@ -54,6 +55,8 @@ public class Car {
 	private String mName;
 	private String mVin;
 	private String mProvider;
+	private int mDistance;
+
 
 	
 	public Car(String mAddress, double mLng, double mLat, String mEngineType,
@@ -70,6 +73,7 @@ public class Car {
 		this.mName = mName;
 		this.mVin = mVin;
 		this.mProvider = mProvider;
+		mDistance = -1;
 	}
 	
 	/**
@@ -140,12 +144,11 @@ public class Car {
 			String address = coordObject.getString(ADDRESS);
 			int fuel = jsonCar.getInt(FMU_FUEL);
 			String provider = jsonCar.getString(FMU_PROVIDER);
+			String name = jsonCar.getString(FMU_NAME);
 			/*String exterior = jsonCar.getString(EXTERIOR);
-			int fuel = jsonCar.getInt(FUEL);
 			String interior = jsonCar.getString(INTERIOR);
-			String name = jsonCar.getString(NAME);
 			String vin = jsonCar.getString(VIN);*/
-			Car car = new Car(address, lng, lat, "", "", fuel, "", "", "", provider);
+			Car car = new Car(address, lng, lat, "", "", fuel, "", name, "", provider);
 			cars.add(car);
 		}
 		return cars;
