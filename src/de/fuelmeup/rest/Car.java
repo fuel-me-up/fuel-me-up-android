@@ -55,7 +55,6 @@ public class Car {
 	private String mName;
 	private String mVin;
 	private String mProvider;
-	private int mDistance;
 
 
 	
@@ -73,7 +72,6 @@ public class Car {
 		this.mName = mName;
 		this.mVin = mVin;
 		this.mProvider = mProvider;
-		mDistance = -1;
 	}
 	
 	/**

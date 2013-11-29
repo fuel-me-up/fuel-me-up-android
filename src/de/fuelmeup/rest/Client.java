@@ -1,7 +1,5 @@
 package de.fuelmeup.rest;
 
-import java.util.Formatter;
-
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -20,7 +18,6 @@ public class Client {
 	private final String C2G_REQUEST_PARAMS = "&oauth_consumer_key=car2go&format=json";		
 	private final String C2G_HAMBURG_STRING = "hamburg";
 	private final String DN_HAMBURG_STRING = "40065";
-	private final int MAX_FUEL_LEVEL = 29;
 	private static Client mInstance;
 	private static AsyncHttpClient mHttpClient;
 	
