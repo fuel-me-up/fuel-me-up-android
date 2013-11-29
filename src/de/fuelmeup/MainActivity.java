@@ -29,7 +29,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 		// Set up the action bar to show tabs.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		
+
 		getActionBar().setDisplayHomeAsUpEnabled(false);
 
 		// for each of the sections in the app, add a tab to the action bar.
@@ -76,24 +76,43 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
-		// When the given tab is selected, show the tab contents in the
-		// container view.
 		Fragment fragment = null;
-		switch (tab.getPosition()) {
-			case 0:
-				fragment = new CarMapFragment();
-				break;
-			case 1:
-				fragment = new CarListFragment();
-				break;
-			default:
-				break;
-		}
-		Bundle args = new Bundle();
-		fragment.setArguments(args);
-		getFragmentManager().beginTransaction()
-				.replace(R.id.tab_container, fragment).commit();
+		String tag = "";
+		FragmentTransaction transaction = getFragmentManager()
+				.beginTransaction();
 
+		// at first detach currently visible fragment from ui
+		Fragment currShowingFragment = getFragmentManager().findFragmentById(
+				R.id.tab_container);
+		if (currShowingFragment != null)
+			transaction.detach(currShowingFragment);
+
+		// check if fragment is already available in FragmentManager if so just
+		// re-attach it to UI else create a new instance
+		switch (tab.getPosition()) {
+		case 0:
+			tag = TAG_CAR_MAP;
+			fragment = getFragmentManager().findFragmentByTag(tag);
+			if (fragment == null) {
+				fragment = new CarMapFragment();
+				transaction.add(R.id.tab_container, fragment, tag);
+			} else
+				transaction.attach(fragment);
+			break;
+		case 1:
+			tag = TAG_CAR_LIST;
+			fragment = getFragmentManager().findFragmentByTag(tag);
+			if (fragment == null) {
+				fragment = new CarListFragment();
+				transaction.add(R.id.tab_container, fragment, tag);
+			} else
+				transaction.attach(fragment);
+			break;
+		default:
+			break;
+		}
+		transaction.commitAllowingStateLoss();
+		getFragmentManager().executePendingTransactions();
 	}
 
 	@Override

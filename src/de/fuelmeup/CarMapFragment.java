@@ -6,22 +6,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -35,60 +33,41 @@ import de.fuelmeup.rest.Client;
  * @author jonas
  * 
  */
-public class CarMapFragment extends MapFragment implements LocationListener {
-	private LocationManager locationManager;
-	private String provider;
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-	    View view = inflater.inflate(R.layout.car_map, container, false);
-	    return super.onCreateView(inflater, container, savedInstanceState);
-	}
+public class CarMapFragment extends MapFragment implements  OnMyLocationChangeListener {
+
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		setRetainInstance(true);
 		setHasOptionsMenu(true);
+		getMap().getUiSettings().setMyLocationButtonEnabled(true);
+		getMap().setMyLocationEnabled(true);
+		getMap().setOnMyLocationChangeListener(this);
 		refreshMap();
-		/*
-		 * restClient.getCars(Client.Provider.DRIVE_NOW, Client.City.HAMBURG,
-		 * mDNCarResponseHandler);
-		 */
-
-		// Get the location manager
-		locationManager = (LocationManager) getActivity().getSystemService(
-				Context.LOCATION_SERVICE);
-		// Define the criteria how to select the locatioin provider -> use
-		// default
-		Criteria criteria = new Criteria();
-		provider = locationManager.getBestProvider(criteria, false);
-		locationManager.requestLocationUpdates(
-				LocationManager.NETWORK_PROVIDER, 4000, 0, this);
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-				4000, 0, this);
-		Location location = locationManager.getLastKnownLocation(provider);
-
-		// Initialize the location fields
-		if (location != null) {
-			System.out.println("Provider " + provider + " has been selected.");
-			onLocationChanged(location);
-		}
+		 getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+		/*	CameraUpdate myLoc = CameraUpdateFactory.newCameraPosition(
+		            new CameraPosition.Builder().zoom(13).build());
+		    getMap().moveCamera(myLoc);*/
 	}
-	
+
 	@Override
-	public void onResume(){
+	public void onResume() {
 		super.onResume();
-		getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
 	}
-	
+
 	private void refreshMap() {
-		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		int defaultMaxFuelLevel = Integer.parseInt(getString(R.string.default_max_fuel_level));
-		int maxFuelLevelC2G =  settings.getInt(getString(R.string.max_fuel_preference_c2g), defaultMaxFuelLevel);
-		
+		SharedPreferences settings = PreferenceManager
+				.getDefaultSharedPreferences(getActivity());
+		int defaultMaxFuelLevel = Integer
+				.parseInt(getString(R.string.default_max_fuel_level));
+		int maxFuelLevelC2G = settings.getInt(
+				getString(R.string.max_fuel_preference_c2g),
+				defaultMaxFuelLevel);
+
 		Client restClient = Client.getInstance();
-		restClient.getCars(Client.Provider.FUEL_ME_UP, Client.City.HAMBURG, maxFuelLevelC2G,
-				mFMUCarResponseHandler);
+		restClient.getCars(Client.Provider.FUEL_ME_UP, Client.City.HAMBURG,
+				maxFuelLevelC2G, mFMUCarResponseHandler);
 	}
 
 	private JsonHttpResponseHandler mDNCarResponseHandler = new JsonHttpResponseHandler() {
@@ -115,8 +94,16 @@ public class CarMapFragment extends MapFragment implements LocationListener {
 		@Override
 		public void onFailure(Throwable e, JSONObject errorResponse) {
 		}
-
 	};
+	
+	@Override
+	public void onMyLocationChange(Location lastKnownLocation) {
+	    CameraUpdate myLoc = CameraUpdateFactory.newCameraPosition(
+	            new CameraPosition.Builder().target(new LatLng(lastKnownLocation.getLatitude(),
+	                    lastKnownLocation.getLongitude())).zoom(13).build());
+	    getMap().moveCamera(myLoc);
+	    getMap().setOnMyLocationChangeListener(null);
+	}
 
 	private JsonHttpResponseHandler mFMUCarResponseHandler = new JsonHttpResponseHandler() {
 		@Override
@@ -124,18 +111,23 @@ public class CarMapFragment extends MapFragment implements LocationListener {
 			try {
 				ArrayList<Car> cars = Car
 						.getCarsFromFMUJSONObject(jsonResponse);
-				getMap().clear();
-				for (Car car : cars) {
-					LatLng position = new LatLng(car.getmLng(), car.getmLat());
-					MarkerOptions carMarker = new MarkerOptions().position(position)
-					.title(car.getmName());
-					if(car.getmProvider().equals(Car.FMU_PROVIDER_C2G))
-						carMarker.icon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-					else if(car.getmProvider().equals(Car.FMU_PROVIDER_DN))
-						carMarker.icon(BitmapDescriptorFactory
-								.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
-					getMap().addMarker(carMarker);
+				if (getMap() != null) {
+					getMap().clear();
+					for (Car car : cars) {
+						LatLng position = new LatLng(car.getmLng(),
+								car.getmLat());
+						MarkerOptions carMarker = new MarkerOptions().position(
+								position).title(car.getmName());
+						if (car.getmProvider().equals(Car.FMU_PROVIDER_C2G))
+							carMarker
+									.icon(BitmapDescriptorFactory
+											.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+						else if (car.getmProvider().equals(Car.FMU_PROVIDER_DN))
+							carMarker
+									.icon(BitmapDescriptorFactory
+											.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
+						getMap().addMarker(carMarker);
+					}
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
@@ -158,34 +150,5 @@ public class CarMapFragment extends MapFragment implements LocationListener {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-	}
-
-	@Override
-	public void onLocationChanged(Location location) {
-		System.out.println("location changed!!!!");
-		System.out.println("location.getLongitude(), location.getLatitude()");
-		LatLng center = new LatLng(location.getLatitude(),
-				location.getLongitude());
-		float zoom = 15f;
-		getMap().animateCamera(CameraUpdateFactory.newLatLngZoom(center, zoom));
-		locationManager.removeUpdates(this);
-	}
-
-	@Override
-	public void onProviderDisabled(String provider) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onProviderEnabled(String provider) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
-
 	}
 }
