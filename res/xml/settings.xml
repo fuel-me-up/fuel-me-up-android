@@ -4,19 +4,11 @@
 
     <com.robobunny.SeekBarPreference
         android:defaultValue="25"
-        android:key="@string/max_fuel_preference_c2g"
+        android:key="@string/max_fuel_preference"
         android:max="100"
-        android:title="@string/max_fuel_preference_c2g_caption"
+        android:title="@string/max_fuel_preference_caption"
         robobunny:min="0"
         robobunny:unitsLeft=""
         robobunny:unitsRight="%" />
-    <!-- <com.robobunny.SeekBarPreference
-        android:defaultValue="25"
-        android:key="@string/max_fuel_preference_dn"
-        android:max="100"
-        android:title="@string/max_fuel_preference_dn_caption"
-        robobunny:min="0"
-        robobunny:unitsLeft=""
-        robobunny:unitsRight="%" /> -->
 
 </PreferenceScreen>

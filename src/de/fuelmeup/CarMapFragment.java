@@ -31,6 +31,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import de.fuelmeup.rest.Car;
 import de.fuelmeup.rest.Client;
+import de.fuelmeup.rest.GasStation;
 
 /**
  * Fragment that displays cars in map.
@@ -90,12 +91,14 @@ public class CarMapFragment extends MapFragment implements OnMyLocationChangeLis
 		int defaultMaxFuelLevel = Integer
 				.parseInt(getString(R.string.default_max_fuel_level));
 		int maxFuelLevelC2G = settings.getInt(
-				getString(R.string.max_fuel_preference_c2g),
+				getString(R.string.max_fuel_preference),
 				defaultMaxFuelLevel);
 
 		Client restClient = Client.getInstance();
+		getMap().clear();
 		restClient.getCars(Client.Provider.FUEL_ME_UP, Client.City.HAMBURG,
 				maxFuelLevelC2G, mFMUCarResponseHandler);
+		restClient.getGasStations(Client.City.HAMBURG, mFMUGasStationResponseHandler);
 	}
 
 	@Override
@@ -114,7 +117,6 @@ public class CarMapFragment extends MapFragment implements OnMyLocationChangeLis
 				ArrayList<Car> cars = Car
 						.getCarsFromFMUJSONObject(jsonResponse);
 				if (getMap() != null) {
-					getMap().clear();
 					for (Car car : cars) {
 						LatLng position = new LatLng(car.getmLng(),
 								car.getmLat());
@@ -145,6 +147,53 @@ public class CarMapFragment extends MapFragment implements OnMyLocationChangeLis
 
 	};
 
+	private JsonHttpResponseHandler mFMUGasStationResponseHandler = new JsonHttpResponseHandler() {
+		@Override
+		public void onSuccess(JSONArray jsonResponse) {
+			try {
+				ArrayList<GasStation> gasStations = GasStation
+						.getGasStationsFromJSONArray(jsonResponse);
+				if (getMap() != null) {
+					for (GasStation gasStation : gasStations) {
+						LatLng position = new LatLng(gasStation.getmLongitude(),
+								gasStation.getmLatitude());
+						MarkerOptions carMarker = new MarkerOptions().position(
+								position);
+						if(gasStation.getmProvider().size() == 2)
+							carMarker
+							.icon(BitmapDescriptorFactory
+									.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+						else {
+							if (gasStation.getmProvider().contains(Car.FMU_PROVIDER_C2G))
+								carMarker
+										.icon(BitmapDescriptorFactory
+												.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+							else if (gasStation.getmProvider().contains(Car.FMU_PROVIDER_DN))
+								carMarker
+										.icon(BitmapDescriptorFactory
+												.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+						}
+						String providerString = gasStation.getmProvider().get(0);
+						if(gasStation.getmProvider().size() > 1)
+							providerString = providerString + ", " + gasStation.getmProvider().get(1);
+						
+						carMarker.title(gasStation.getmName())
+                        .snippet(providerString);
+						getMap().addMarker(carMarker);
+					}
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public void onFailure(Throwable e, JSONObject errorResponse) {
+		}
+
+	};
+
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {

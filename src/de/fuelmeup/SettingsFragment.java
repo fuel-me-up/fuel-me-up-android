@@ -33,6 +33,8 @@ public class SettingsFragment extends PreferenceFragment {
 	    inflater.inflate(R.menu.main, menu);
 	    MenuItem item = menu.findItem(R.id.action_settings);
 	    item.setVisible(false);
+	    item = menu.findItem(R.id.action_refresh);
+	    item.setVisible(false);
 	}
 
 	@Override
