@@ -62,6 +62,7 @@ public class Client {
 	 * @param responseHandler Handler for response data
 	 */
 	public void getCars(Provider provider, City  city, int maxFuelLevel, AsyncHttpResponseHandler responseHandler){
+		System.out.println("NEW GET");
 		String url = null;
 		switch(provider){
 			case CAR2GO:
