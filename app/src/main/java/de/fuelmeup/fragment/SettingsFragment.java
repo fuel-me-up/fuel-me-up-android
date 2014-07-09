@@ -1,4 +1,4 @@
-package de.fuelmeup;
+package de.fuelmeup.fragment;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
@@ -8,6 +8,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import de.fuelmeup.R;
 
 public class SettingsFragment extends PreferenceFragment {
 	@Override

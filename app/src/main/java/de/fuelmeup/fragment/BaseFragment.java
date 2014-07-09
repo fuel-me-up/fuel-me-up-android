@@ -1,4 +1,4 @@
-package de.fuelmeup;
+package de.fuelmeup.fragment;
 
 public interface BaseFragment {
 	abstract void onResumeFragment();
