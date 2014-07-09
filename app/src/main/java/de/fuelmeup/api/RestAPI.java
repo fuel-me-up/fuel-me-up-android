@@ -10,9 +10,6 @@ import retrofit.http.Path;
 import retrofit.http.Query;
 import rx.Observable;
 
-/**
- * Created by jonas on 7/9/14.
- */
 public interface RestAPI {
 
     public final String FUEL_ME_UP_BASE_URL = "http://fuel-me-up.herokuapp.com";

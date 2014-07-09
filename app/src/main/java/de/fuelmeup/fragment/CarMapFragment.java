@@ -21,9 +21,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.List;
 
 import de.fuelmeup.R;
+import de.fuelmeup.api.RestClient;
 import de.fuelmeup.api.model.Car;
 import de.fuelmeup.api.model.GasStation;
-import de.fuelmeup.api.RestClient;
 
 /**
  * Fragment that displays cars in map.
@@ -32,9 +32,10 @@ import de.fuelmeup.api.RestClient;
  */
 public class CarMapFragment extends MapFragment implements OnMyLocationChangeListener, BaseFragment {
 
-    private static final String MAPS_REQUEST_URL = "http://maps.google.com/maps?&daddr=%s,%s";
     private static final String LOG_TAG = CarMapFragment.class.getSimpleName();
+    private static final String MAPS_NAVIGATION_URL = "http://maps.google.com/maps?&daddr=%s,%s";
     public static final int DEFAULT_ZOOM_LEVEL = 13;
+    public static final int MAX_NO_OF_PROVIDERS = 2;
     private boolean notLocalized = true;
 
     private RestClient restClient;
@@ -55,11 +56,6 @@ public class CarMapFragment extends MapFragment implements OnMyLocationChangeLis
         refreshMap();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     private void initMap() {
         getMap().getUiSettings().setMyLocationButtonEnabled(true);
         getMap().setMyLocationEnabled(true);
@@ -73,7 +69,7 @@ public class CarMapFragment extends MapFragment implements OnMyLocationChangeLis
     }
 
     private void sendIntentForNavigation(LatLng location) {
-        String uri = String.format(MAPS_REQUEST_URL, location.latitude, location.longitude);
+        String uri = String.format(MAPS_NAVIGATION_URL, location.latitude, location.longitude);
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
         startActivity(intent);
     }
@@ -96,59 +92,63 @@ public class CarMapFragment extends MapFragment implements OnMyLocationChangeLis
     }
 
     private void drawCars(List<Car> cars) {
-        if (getMap() != null) {
-            for (Car car : cars) {
-                LatLng position = new LatLng(car.coordinate.latitude,
-                        car.coordinate.longitude);
-                MarkerOptions carMarker = new MarkerOptions().position(
-                        position).title(car.licensePlate);
-                if (car.provider.equals(Car.PROVIDER_C2G))
-                    carMarker
-                            .icon(BitmapDescriptorFactory
-                                    .defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-                else if (car.provider.equals(Car.PROVIDER_DN))
-                    carMarker
-                            .icon(BitmapDescriptorFactory
-                                    .defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
-                String providerString = getString(R.string.provider_and_plate);
-                carMarker.title(String.format(providerString, car.provider, car.licensePlate))
-                        .snippet(getString(R.string.fuel_label) + car.fuelLevel);
-                getMap().addMarker(carMarker);
+        if (getMap() == null) {
+            return;
+        }
+
+        for (Car car : cars) {
+            LatLng position = new LatLng(car.coordinate.latitude,
+                    car.coordinate.longitude);
+            MarkerOptions carMarker = new MarkerOptions().position(
+                    position).title(car.licensePlate);
+            if (car.provider.equals(Car.PROVIDER_C2G)) {
+                carMarker.icon(BitmapDescriptorFactory
+                        .defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+            } else if (car.provider.equals(Car.PROVIDER_DN)) {
+                carMarker.icon(BitmapDescriptorFactory
+                        .defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
             }
+
+            String providerString = getString(R.string.provider_and_plate);
+            carMarker.title(String.format(providerString, car.provider, car.licensePlate))
+                    .snippet(getString(R.string.fuel_label) + car.fuelLevel);
+            getMap().addMarker(carMarker);
         }
     }
 
     private void drawGasStations(List<GasStation> gasStations) {
-        if (getMap() != null) {
-            for (GasStation gasStation : gasStations) {
-                LatLng position = new LatLng(gasStation.coordinate.latitude,
-                        gasStation.coordinate.longitude);
-                MarkerOptions carMarker = new MarkerOptions().position(
-                        position);
-                if (gasStation.provider.size() == 2)
-                    carMarker
-                            .icon(BitmapDescriptorFactory
-                                    .defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                else {
-                    if (gasStation.provider.contains(Car.PROVIDER_C2G))
-                        carMarker
-                                .icon(BitmapDescriptorFactory
-                                        .defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-                    else if (gasStation.provider.contains(Car.PROVIDER_DN))
-                        carMarker
-                                .icon(BitmapDescriptorFactory
-                                        .defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
-                }
-                String providerString = gasStation.provider.get(0);
-                if (gasStation.provider.size() > 1)
-                    providerString = providerString + ", " + gasStation.provider.get(1);
+        if (getMap() == null) {
+            return;
+        }
 
-                carMarker.title(gasStation.name)
-                        .snippet(providerString);
-                getMap().addMarker(carMarker);
+        for (GasStation gasStation : gasStations) {
+            LatLng position = new LatLng(gasStation.coordinate.latitude,
+                    gasStation.coordinate.longitude);
+            MarkerOptions carMarker = new MarkerOptions().position(
+                    position);
+            if (gasStation.provider.size() == MAX_NO_OF_PROVIDERS) {
+                carMarker.icon(BitmapDescriptorFactory
+                        .defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            } else {
+                if (gasStation.provider.contains(Car.PROVIDER_C2G)) {
+                    carMarker.icon(BitmapDescriptorFactory
+                            .defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                } else if (gasStation.provider.contains(Car.PROVIDER_DN)) {
+                    carMarker.icon(BitmapDescriptorFactory
+                            .defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+                }
             }
+            String providerString = gasStation.provider.get(0);
+            if (gasStation.provider.size() > 1) {
+                providerString = providerString + ", " + gasStation.provider.get(1);
+            }
+
+            carMarker.title(gasStation.name)
+                    .snippet(providerString);
+            getMap().addMarker(carMarker);
         }
     }
+
 
     @Override
     public void onMyLocationChange(Location lastKnownLocation) {
