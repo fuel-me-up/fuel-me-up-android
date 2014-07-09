@@ -1,6 +1,11 @@
 .DS_Store
 .classpath
 .project
+.idea
+.gradle
+local.properties
+app/build/
+build
 .settings/
 bin/
 gen/
