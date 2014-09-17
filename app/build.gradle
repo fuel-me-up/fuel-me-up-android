@@ -1,0 +1,45 @@
+apply plugin: 'android'
+apply plugin: 'versions'
+apply plugin: 'retrolambda'
+
+retrolambda {
+    jdk System.getenv("JAVA8_HOME")
+    oldJdk System.getenv("JAVA7_HOME")
+    javaVersion JavaVersion.VERSION_1_7
+}
+
+// Manifest version information!
+def versionMajor = 1
+def versionMinor = 0
+def versionPatch = 0
+
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.1.0"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100
+        applicationId "de.fuelmeup"
+        minSdkVersion 13
+        targetSdkVersion 19
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+    }
+
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:+'
+    compile files('libs/android-async-http-1.4.3.jar')
+    compile 'com.google.android.gms:play-services:4.3.23'
+    compile 'com.squareup.retrofit:retrofit:1.5.1'
+    compile 'com.netflix.rxjava:rxjava-android:0.19.0'
+    compile 'com.squareup.okhttp:okhttp:1.5.4'
+    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.android.support:support-v13:19.+'
+}
