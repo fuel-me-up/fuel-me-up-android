@@ -34,12 +34,11 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:+'
     compile files('libs/android-async-http-1.4.3.jar')
     compile 'com.google.android.gms:play-services:4.3.23'
     compile 'com.squareup.retrofit:retrofit:1.5.1'
     compile 'com.netflix.rxjava:rxjava-android:0.19.0'
     compile 'com.squareup.okhttp:okhttp:1.5.4'
     compile 'com.google.code.gson:gson:2.2.4'
-    compile 'com.android.support:support-v13:19.+'
+    compile 'com.android.support:support-v13:19.1.0'
 }
