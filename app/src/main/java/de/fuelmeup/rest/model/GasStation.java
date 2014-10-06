@@ -1,4 +1,4 @@
-package de.fuelmeup.api.model;
+package de.fuelmeup.rest.model;
 
 import java.util.List;
 

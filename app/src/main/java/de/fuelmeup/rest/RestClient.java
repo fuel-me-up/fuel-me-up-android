@@ -1,4 +1,4 @@
-package de.fuelmeup.api;
+package de.fuelmeup.rest;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,8 +17,8 @@ import java.net.ResponseCache;
 import java.util.List;
 
 import de.fuelmeup.BuildConfig;
-import de.fuelmeup.api.model.Car;
-import de.fuelmeup.api.model.GasStation;
+import de.fuelmeup.rest.model.Car;
+import de.fuelmeup.rest.model.GasStation;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.converter.Converter;
@@ -42,7 +42,7 @@ public class RestClient {
      */
     private final RestAdapter.LogLevel logLevel = BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE;
 
-    private RestAPI restAPI;
+    private ApiService apiService;
 
     public RestClient(Context context) {
 
@@ -61,11 +61,11 @@ public class RestClient {
                     request.addHeader("Content-Type", "application/json");
                 }).
                         setExecutors(AsyncTask.THREAD_POOL_EXECUTOR, AsyncTask.THREAD_POOL_EXECUTOR).
-                        setEndpoint(RestAPI.FUEL_ME_UP_BASE_URL).
+                        setEndpoint(ApiService.FUEL_ME_UP_BASE_URL).
                         setClient(okClient).setConverter(httpConverter).
                         setLogLevel(logLevel).build();
 
-        restAPI = rest.create(RestAPI.class);
+        apiService = rest.create(ApiService.class);
 
     }
 
@@ -81,14 +81,14 @@ public class RestClient {
 
     public Subscription fetchCarsInHamburg(int maxFuelLevel, Activity activity, Action1<List<Car>> onComplete, Action1<Throwable> onError) {
         return AndroidObservable.
-                bindActivity(activity, restAPI.fetchVehicles("hamburg", maxFuelLevel)).
+                bindActivity(activity, apiService.fetchVehicles("hamburg", maxFuelLevel)).
                 observeOn(AndroidSchedulers.mainThread()).
                 subscribeOn(Schedulers.from(AsyncTask.THREAD_POOL_EXECUTOR)).
                 subscribe(onComplete, onError);
     }
 
     public Subscription fetchGasStationsInHamburg(Activity activity, Action1<List<GasStation>> onComplete, Action1<Throwable> onError) {
-        return AndroidObservable.bindActivity(activity, restAPI.fetchGasStations("hamburg")).
+        return AndroidObservable.bindActivity(activity, apiService.fetchGasStations("hamburg")).
                 observeOn(AndroidSchedulers.mainThread()).
                 subscribeOn(Schedulers.from(AsyncTask.THREAD_POOL_EXECUTOR)).
                 subscribe(onComplete, onError);

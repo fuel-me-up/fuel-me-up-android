@@ -1,4 +1,4 @@
-package de.fuelmeup.api.model;
+package de.fuelmeup.rest.model;
 
 /**
  * Created by jonas on 7/9/14.

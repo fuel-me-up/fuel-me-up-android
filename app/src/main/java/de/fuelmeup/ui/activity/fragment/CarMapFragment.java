@@ -1,4 +1,4 @@
-package de.fuelmeup.fragment;
+package de.fuelmeup.ui.activity.fragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,9 +21,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.List;
 
 import de.fuelmeup.R;
-import de.fuelmeup.api.RestClient;
-import de.fuelmeup.api.model.Car;
-import de.fuelmeup.api.model.GasStation;
+import de.fuelmeup.rest.RestClient;
+import de.fuelmeup.rest.model.Car;
+import de.fuelmeup.rest.model.GasStation;
 
 /**
  * Fragment that displays cars in map.

@@ -1,16 +1,16 @@
-package de.fuelmeup.api;
+package de.fuelmeup.rest;
 
 
 import java.util.List;
 
-import de.fuelmeup.api.model.Car;
-import de.fuelmeup.api.model.GasStation;
+import de.fuelmeup.rest.model.Car;
+import de.fuelmeup.rest.model.GasStation;
 import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
 import rx.Observable;
 
-public interface RestAPI {
+public interface ApiService {
 
     public final String FUEL_ME_UP_BASE_URL = "http://fuel-me-up.herokuapp.com";
 
