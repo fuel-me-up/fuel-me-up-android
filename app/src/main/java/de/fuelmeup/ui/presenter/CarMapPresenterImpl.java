@@ -1,4 +1,4 @@
-package de.fuelmeup.ui.fragment;
+package de.fuelmeup.ui.presenter;
 
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -8,11 +8,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import de.fuelmeup.preferences.FuelLevelPreference;
+import de.fuelmeup.preferences.IntegerPreference;
 import de.fuelmeup.resources.CarMarkerTitleFormat;
 import de.fuelmeup.resources.FuelLevelString;
 import de.fuelmeup.resources.StringResource;
 import de.fuelmeup.rest.RestClient;
 import de.fuelmeup.rest.model.Car;
+import de.fuelmeup.ui.fragment.CarMapView;
 import de.fuelmeup.ui.model.Marker;
 
 /**
@@ -31,6 +34,10 @@ public class CarMapPresenterImpl implements CarMapPresenter {
     StringResource fuelString;
 
     @Inject
+    @FuelLevelPreference
+    IntegerPreference fuelLevelPreference;
+
+    @Inject
     CarMapView carMapView;
 
 
@@ -40,12 +47,13 @@ public class CarMapPresenterImpl implements CarMapPresenter {
     @Override
     public void onResume() {
 
-        restClient.fetchCarsInHamburg(50, cars -> displayCars(cars), error -> {
-        });
+        int i = fuelLevelPreference.get(100);
+        restClient.fetchCarsInHamburg(fuelLevelPreference.get(100), cars -> displayCars(cars), error -> { });
     }
 
     private void displayCars(List<Car> cars) {
         List<Marker> markers = new ArrayList<>();
+
         for (Car car : cars) {
             final LatLng position = new LatLng(car.coordinate.latitude,
                     car.coordinate.longitude);

@@ -8,6 +8,8 @@ import dagger.Provides;
 import de.fuelmeup.AppModule;
 import de.fuelmeup.data.DataModule;
 import de.fuelmeup.resources.ResourcesModule;
+import de.fuelmeup.ui.presenter.CarMapPresenter;
+import de.fuelmeup.ui.presenter.CarMapPresenterImpl;
 
 @Module(
         complete = false,

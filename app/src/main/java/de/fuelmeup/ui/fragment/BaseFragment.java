@@ -11,21 +11,19 @@ import dagger.ObjectGraph;
 import de.fuelmeup.App;
 
 public abstract class BaseFragment extends MapFragment {
-    abstract void onResumeFragment();
-
-    private ObjectGraph activityGraph;
+    private ObjectGraph fragmentGraph;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activityGraph = ((App) getActivity().getApplication()).createScopedGraph(getModules().toArray());
-        activityGraph.inject(this);
+        fragmentGraph = ((App) getActivity().getApplication()).createScopedGraph(getModules().toArray());
+        fragmentGraph.inject(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        activityGraph = null;
+        fragmentGraph = null;
     }
 
     protected abstract List<Object> getModules();

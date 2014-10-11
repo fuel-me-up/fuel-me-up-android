@@ -1,9 +1,14 @@
 package de.fuelmeup.ui.fragment;
 
+import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -24,6 +29,8 @@ import de.fuelmeup.rest.model.Car;
 import de.fuelmeup.rest.model.GasStation;
 import de.fuelmeup.ui.model.Marker;
 import de.fuelmeup.ui.model.MarkerMapper;
+import de.fuelmeup.ui.presenter.CarMapPresenter;
+import de.fuelmeup.ui.presenter.PresenterModule;
 
 /**
  * Fragment that displays cars in map.
@@ -43,9 +50,26 @@ public class CarMapFragment extends BaseFragment implements OnMyLocationChangeLi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        activity.getActionBar().setDisplayHomeAsUpEnabled(false);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.car_map, menu);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
         presenter.onResume();
-
     }
 
     @Override
@@ -59,7 +83,6 @@ public class CarMapFragment extends BaseFragment implements OnMyLocationChangeLi
         super.onActivityCreated(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
-        getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
         initMap();
     }
 
@@ -72,50 +95,6 @@ public class CarMapFragment extends BaseFragment implements OnMyLocationChangeLi
         getMap().setOnInfoWindowClickListener(marker -> {
             presenter.onMarkerClicked(MarkerMapper.fromMapsMarker(marker));
         });
-    }
-
-
-    private void refreshMap() {
-      /*  SharedPreferences settings = PreferenceManager
-                .getDefaultSharedPreferences(getActivity());
-        int defaultMaxFuelLevel = Integer
-                .parseInt(getString(R.string.default_max_fuel_level));
-        int maxFuelLevelC2G = settings.getInt(
-                getString(R.string.max_fuel_preference),
-                defaultMaxFuelLevel);
-
-        getMap().clear();
-        restClient.fetchCarsInHamburg(maxFuelLevelC2G, getActivity(),
-                cars -> drawCars(cars), throwable -> Log.d(LOG_TAG, "", throwable));
-
-        restClient.fetchGasStationsInHamburg(getActivity(),
-                gastStations -> drawGasStations(gastStations), throwable -> Log.d(LOG_TAG, "", throwable));
-    */
-    }
-
-    private void drawCars(List<Car> cars) {
-        if (getMap() == null) {
-            return;
-        }
-
-        for (Car car : cars) {
-            LatLng position = new LatLng(car.coordinate.latitude,
-                    car.coordinate.longitude);
-            MarkerOptions carMarker = new MarkerOptions().position(
-                    position).title(car.licensePlate);
-            if (car.provider.equals(Car.PROVIDER_C2G)) {
-                carMarker.icon(BitmapDescriptorFactory
-                        .defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-            } else if (car.provider.equals(Car.PROVIDER_DN)) {
-                carMarker.icon(BitmapDescriptorFactory
-                        .defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
-            }
-
-            String providerString = getString(R.string.provider_and_plate);
-            carMarker.title(String.format(providerString, car.provider, car.licensePlate))
-                    .snippet(getString(R.string.fuel_label) + car.fuelLevel);
-            getMap().addMarker(carMarker);
-        }
     }
 
     private void drawGasStations(List<GasStation> gasStations) {
@@ -167,16 +146,18 @@ public class CarMapFragment extends BaseFragment implements OnMyLocationChangeLi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                refreshMap();
                 return true;
+            case R.id.action_settings:
+                    PreferenceFragment settingsFragment = new SettingsFragment();
+                    FragmentTransaction transaction = getFragmentManager()
+                            .beginTransaction();
+                    transaction.replace(android.R.id.content, settingsFragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                    return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    public void onResumeFragment() {
-        refreshMap();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package de.fuelmeup.ui.fragment;
+package de.fuelmeup.ui.presenter;
 
 import de.fuelmeup.ui.model.Marker;
 

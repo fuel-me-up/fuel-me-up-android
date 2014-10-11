@@ -31,7 +31,7 @@ public class SettingsFragment extends PreferenceFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        inflater.inflate(R.menu.main, menu);
+        inflater.inflate(R.menu.car_map, menu);
         MenuItem item = menu.findItem(R.id.action_settings);
         item.setVisible(false);
         item = menu.findItem(R.id.action_refresh);
