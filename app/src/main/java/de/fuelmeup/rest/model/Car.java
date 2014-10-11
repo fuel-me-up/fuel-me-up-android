@@ -7,13 +7,13 @@ public class Car {
 
 
     public final String address;
-    public final String fuelLevel;
+    public final int fuelLevel;
     public final Coordinate coordinate;
     public final String licensePlate;
     public final String provider;
 
 
-    public Car(String address, String fuelLevel, Coordinate coordinate, String licensePlate, String provider) {
+    public Car(String address, int fuelLevel, Coordinate coordinate, String licensePlate, String provider) {
         this.address = address;
         this.fuelLevel = fuelLevel;
         this.coordinate = coordinate;

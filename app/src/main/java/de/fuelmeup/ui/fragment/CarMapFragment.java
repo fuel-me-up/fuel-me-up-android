@@ -1,50 +1,58 @@
-package de.fuelmeup.ui.activity.fragment;
+package de.fuelmeup.ui.fragment;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import de.fuelmeup.R;
-import de.fuelmeup.rest.RestClient;
 import de.fuelmeup.rest.model.Car;
 import de.fuelmeup.rest.model.GasStation;
+import de.fuelmeup.ui.model.Marker;
+import de.fuelmeup.ui.model.MarkerMapper;
 
 /**
  * Fragment that displays cars in map.
  *
  * @author jonas
  */
-public class CarMapFragment extends MapFragment implements OnMyLocationChangeListener, BaseFragment {
+public class CarMapFragment extends BaseFragment implements OnMyLocationChangeListener, CarMapView {
 
     private static final String LOG_TAG = CarMapFragment.class.getSimpleName();
-    private static final String MAPS_NAVIGATION_URL = "http://maps.google.com/maps?&daddr=%s,%s";
     public static final int DEFAULT_ZOOM_LEVEL = 13;
     public static final int MAX_NO_OF_PROVIDERS = 2;
     private boolean notLocalized = true;
 
-    private RestClient restClient;
+    @Inject
+    CarMapPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        restClient = new RestClient(getActivity());
+
+        presenter.onResume();
+
     }
+
+    @Override
+    protected List<Object> getModules() {
+        return Arrays.asList(new CarMapModule(this), new PresenterModule());
+    }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -53,7 +61,6 @@ public class CarMapFragment extends MapFragment implements OnMyLocationChangeLis
         setHasOptionsMenu(true);
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
         initMap();
-        refreshMap();
     }
 
     private void initMap() {
@@ -63,19 +70,13 @@ public class CarMapFragment extends MapFragment implements OnMyLocationChangeLis
             getMap().setOnMyLocationChangeListener(this);
         notLocalized = false;
         getMap().setOnInfoWindowClickListener(marker -> {
-            LatLng markerPosition = marker.getPosition();
-            sendIntentForNavigation(markerPosition);
+            presenter.onMarkerClicked(MarkerMapper.fromMapsMarker(marker));
         });
     }
 
-    private void sendIntentForNavigation(LatLng location) {
-        String uri = String.format(MAPS_NAVIGATION_URL, location.latitude, location.longitude);
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-        startActivity(intent);
-    }
 
     private void refreshMap() {
-        SharedPreferences settings = PreferenceManager
+      /*  SharedPreferences settings = PreferenceManager
                 .getDefaultSharedPreferences(getActivity());
         int defaultMaxFuelLevel = Integer
                 .parseInt(getString(R.string.default_max_fuel_level));
@@ -89,6 +90,7 @@ public class CarMapFragment extends MapFragment implements OnMyLocationChangeLis
 
         restClient.fetchGasStationsInHamburg(getActivity(),
                 gastStations -> drawGasStations(gastStations), throwable -> Log.d(LOG_TAG, "", throwable));
+    */
     }
 
     private void drawCars(List<Car> cars) {
@@ -175,5 +177,25 @@ public class CarMapFragment extends MapFragment implements OnMyLocationChangeLis
     @Override
     public void onResumeFragment() {
         refreshMap();
+    }
+
+    @Override
+    public void drawMarkers(List<Marker> markers) {
+        if (getMap() == null) {
+            return;
+        }
+
+        for (Marker marker : markers) {
+            MarkerOptions mapMarker = new MarkerOptions().position(
+                    marker.position).title(marker.title)
+                    .snippet(marker.snippet)
+                    .icon(BitmapDescriptorFactory.defaultMarker(marker.markerHue));
+            getMap().addMarker(mapMarker);
+        }
+    }
+
+    @Override
+    public void startViewIntentWithStringUri(String uri) {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(uri)));
     }
 }

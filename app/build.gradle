@@ -31,6 +31,19 @@ android {
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
     }
 
+    productFlavors {
+        mockEnvironment {}
+    }
+
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
 }
 
 dependencies {
@@ -41,4 +54,22 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:1.5.4'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.android.support:support-v13:19.1.0'
+    compile 'com.squareup.dagger:dagger:1.2.2'
+    provided 'com.squareup.dagger:dagger-compiler:1.2.2'
+    compile 'com.jakewharton.timber:timber:2.4.+'
+
+
+    androidTestCompile 'org.objenesis:objenesis:2.0'
+    androidTestCompile 'org.hamcrest:hamcrest-core:1.1'
+    androidTestCompile 'org.hamcrest:hamcrest-integration:1.1'
+    androidTestCompile 'org.hamcrest:hamcrest-library:1.1'
+    androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.1'
+
+    mockEnvironmentCompile 'org.objenesis:objenesis:2.0'
+    mockEnvironmentCompile 'org.hamcrest:hamcrest-core:1.1'
+    mockEnvironmentCompile 'org.hamcrest:hamcrest-integration:1.1'
+    mockEnvironmentCompile 'org.hamcrest:hamcrest-library:1.1'
+    mockEnvironmentCompile 'org.mockito:mockito-core:1.9.5'
+    mockEnvironmentCompile 'com.google.dexmaker:dexmaker:1.1'
+    mockEnvironmentCompile 'com.google.dexmaker:dexmaker-mockito:1.1'
 }

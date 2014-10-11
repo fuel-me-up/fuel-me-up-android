@@ -1,4 +1,4 @@
-package de.fuelmeup.ui.activity.fragment;
+package de.fuelmeup.ui.fragment;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;

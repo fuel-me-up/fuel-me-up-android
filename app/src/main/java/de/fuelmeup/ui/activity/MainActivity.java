@@ -2,68 +2,65 @@ package de.fuelmeup.ui.activity;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentManager.OnBackStackChangedListener;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import de.fuelmeup.ui.activity.fragment.BaseFragment;
-import de.fuelmeup.ui.activity.fragment.CarMapFragment;
 import de.fuelmeup.R;
-import de.fuelmeup.ui.activity.fragment.SettingsFragment;
+import de.fuelmeup.ui.fragment.CarMapFragment;
+import de.fuelmeup.ui.fragment.SettingsFragment;
 
 /**
  * Main GUI activity.
- * 
+ *
  * @author jonas
- * 
  */
 public class MainActivity extends Activity {
 
-	public final String TAG_CAR_MAP = "carmap";
+    public final String TAG_CAR_MAP = "carmap";
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-		getActionBar().setDisplayHomeAsUpEnabled(false);
-		Fragment fragment = new CarMapFragment();
-		FragmentTransaction transaction = getFragmentManager()
-				.beginTransaction();
-		transaction.replace(R.id.tab_container, fragment, TAG_CAR_MAP);
-		transaction.commit();
-		getFragmentManager().addOnBackStackChangedListener(getListener());
-	}
+        getActionBar().setDisplayHomeAsUpEnabled(false);
+        Fragment fragment = new CarMapFragment();
+        FragmentTransaction transaction = getFragmentManager()
+                .beginTransaction();
+        transaction.replace(R.id.tab_container, fragment, TAG_CAR_MAP);
+        transaction.commit();
+        //getFragmentManager().addOnBackStackChangedListener(getListener());
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.action_settings:
-			PreferenceFragment newFragment = new SettingsFragment();
-			FragmentTransaction transaction = getFragmentManager()
-					.beginTransaction();
-			transaction.replace(android.R.id.content, newFragment);
-			transaction.addToBackStack(null);
-			transaction.commit();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
 
-	private OnBackStackChangedListener getListener() {
-		OnBackStackChangedListener result = new OnBackStackChangedListener() {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                PreferenceFragment newFragment = new SettingsFragment();
+                FragmentTransaction transaction = getFragmentManager()
+                        .beginTransaction();
+                transaction.replace(android.R.id.content, newFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+	/*private OnBackStackChangedListener getListener() {
+        OnBackStackChangedListener result = new OnBackStackChangedListener() {
 			public void onBackStackChanged() {
 				FragmentManager manager = getFragmentManager();
 				if (manager != null) {
@@ -76,6 +73,6 @@ public class MainActivity extends Activity {
 		};
 
 		return result;
-	}
+	}*/
 
 }
