@@ -15,6 +15,14 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:actionBarStyle">@style/CustomActionBar</item>
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="CustomActionBar"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/fuelmeup_blue</item>
+        <item name="android:itemBackground">@drawable/actionbar_item_background</item>
     </style>
 
 </resources>

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.view.Menu;
@@ -11,9 +12,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterItem;
+import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +33,9 @@ import de.fuelmeup.ui.model.MarkerMapper;
 import de.fuelmeup.ui.presenter.CarMapPresenter;
 import de.fuelmeup.ui.presenter.PresenterModule;
 import de.fuelmeup.ui.view.custom.LabelledSeekBar;
+import rx.android.observables.AndroidObservable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Fragment that displays cars in map.
@@ -43,6 +50,7 @@ public class CarMapFragment extends BaseMapFragment implements CarMapView {
     @Inject
     CarMapPresenter presenter;
     private LabelledSeekBar seekBarFuelLevel;
+    private ClusterManager<CarItem> clusterManager;
 
     @Override
     protected int provideLayout() {
@@ -61,7 +69,9 @@ public class CarMapFragment extends BaseMapFragment implements CarMapView {
 
         // Observe seekBar tracking to inform presenter about fuel level
         SeekBarObservable.startTrackingTouch(seekBarFuelLevel)
-                .subscribe(progress -> presenter.fuelLevelChanged(progress));
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.from(AsyncTask.THREAD_POOL_EXECUTOR))
+                        .subscribe(progress -> presenter.fuelLevelChanged(progress));
     }
 
     @Override
@@ -102,6 +112,7 @@ public class CarMapFragment extends BaseMapFragment implements CarMapView {
         getMap().setOnInfoWindowClickListener(marker -> {
             presenter.onMarkerClicked(MarkerMapper.fromMapsMarker(marker));
         });
+        setUpClusterer();
     }
 
     private void drawGasStations(List<GasStation> gasStations) {
@@ -143,12 +154,7 @@ public class CarMapFragment extends BaseMapFragment implements CarMapView {
             case R.id.action_refresh:
                 return true;
             case R.id.action_settings:
-                PreferenceFragment settingsFragment = new SettingsFragment();
-                FragmentTransaction transaction = getFragmentManager()
-                        .beginTransaction();
-                transaction.replace(android.R.id.content, settingsFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
+                // TODO: Show settings?
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -161,14 +167,15 @@ public class CarMapFragment extends BaseMapFragment implements CarMapView {
             return;
         }
 
-        getMap().clear();
+        clusterManager.clearItems();
 
         for (Marker marker : markers) {
-            MarkerOptions mapMarker = new MarkerOptions().position(
+            /*MarkerOptions mapMarker = new MarkerOptions().position(
                     marker.position).title(marker.title)
                     .snippet(marker.snippet)
                     .icon(BitmapDescriptorFactory.defaultMarker(marker.markerHue));
-            getMap().addMarker(mapMarker);
+            getMap().addMarker(mapMarker);*/
+            clusterManager.addItem(new CarItem(marker.position.latitude, marker.position.longitude));
         }
     }
 
@@ -180,5 +187,31 @@ public class CarMapFragment extends BaseMapFragment implements CarMapView {
     @Override
     public void startViewIntentWithStringUri(String uri) {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(uri)));
+    }
+
+    private void setUpClusterer() {
+        // Position the map.
+        getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.503186, -0.126446), 10));
+
+        // Initialize the manager with the context and the map.
+        clusterManager = new ClusterManager<>(getActivity(), getMap());
+
+        // Point the map's listeners at the listeners implemented by the cluster
+        // manager.
+        getMap().setOnCameraChangeListener(clusterManager);
+        getMap().setOnMarkerClickListener(clusterManager);
+    }
+
+    public class CarItem implements ClusterItem {
+        private final LatLng mPosition;
+
+        public CarItem(double lat, double lng) {
+            mPosition = new LatLng(lat, lng);
+        }
+
+        @Override
+        public LatLng getPosition() {
+            return mPosition;
+        }
     }
 }

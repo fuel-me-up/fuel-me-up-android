@@ -8,12 +8,12 @@
     </facet>
     <facet type="android" name="Android">
       <configuration>
-        <option name="SELECTED_BUILD_VARIANT" value="mockEnvironmentDebug" />
-        <option name="ASSEMBLE_TASK_NAME" value="assembleMockEnvironmentDebug" />
-        <option name="COMPILE_JAVA_TASK_NAME" value="compileMockEnvironmentDebugSources" />
-        <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleMockEnvironmentDebugTest" />
-        <option name="SOURCE_GEN_TASK_NAME" value="generateMockEnvironmentDebugSources" />
-        <option name="TEST_SOURCE_GEN_TASK_NAME" value="generateMockEnvironmentDebugTestSources" />
+        <option name="SELECTED_BUILD_VARIANT" value="productionEnvironmentDebug" />
+        <option name="ASSEMBLE_TASK_NAME" value="assembleProductionEnvironmentDebug" />
+        <option name="COMPILE_JAVA_TASK_NAME" value="compileProductionEnvironmentDebugSources" />
+        <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleProductionEnvironmentDebugTest" />
+        <option name="SOURCE_GEN_TASK_NAME" value="generateProductionEnvironmentDebugSources" />
+        <option name="TEST_SOURCE_GEN_TASK_NAME" value="generateProductionEnvironmentDebugTestSources" />
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
@@ -23,40 +23,40 @@
     </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/build/intermediates/classes/mockEnvironment/debug" />
+    <output url="file://$MODULE_DIR$/build/intermediates/classes/productionEnvironment/debug" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/r/mockEnvironment/debug" isTestSource="false" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/aidl/mockEnvironment/debug" isTestSource="false" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/mockEnvironment/debug" isTestSource="false" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/mockEnvironment/debug" isTestSource="false" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/mockEnvironment/debug" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/mockEnvironmentDebug/res" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/mockEnvironmentDebug/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/mockEnvironmentDebug/assets" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/mockEnvironmentDebug/aidl" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/mockEnvironmentDebug/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/mockEnvironmentDebug/jni" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/mockEnvironmentDebug/rs" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/r/test/mockEnvironment/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/aidl/test/mockEnvironment/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/test/mockEnvironment/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/test/mockEnvironment/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/test/mockEnvironment/debug" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/mockEnvironment/res" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/mockEnvironment/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/mockEnvironment/assets" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/mockEnvironment/aidl" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/mockEnvironment/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/mockEnvironment/jni" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/mockEnvironment/rs" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestMockEnvironment/res" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestMockEnvironment/resources" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestMockEnvironment/assets" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestMockEnvironment/aidl" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestMockEnvironment/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestMockEnvironment/jni" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestMockEnvironment/rs" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/r/productionEnvironment/debug" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/aidl/productionEnvironment/debug" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/productionEnvironment/debug" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/productionEnvironment/debug" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/productionEnvironment/debug" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/productionEnvironmentDebug/res" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/productionEnvironmentDebug/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/productionEnvironmentDebug/assets" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/productionEnvironmentDebug/aidl" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/productionEnvironmentDebug/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/productionEnvironmentDebug/jni" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/productionEnvironmentDebug/rs" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/r/test/productionEnvironment/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/aidl/test/productionEnvironment/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/test/productionEnvironment/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/test/productionEnvironment/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/test/productionEnvironment/debug" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/productionEnvironment/res" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/productionEnvironment/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/productionEnvironment/assets" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/productionEnvironment/aidl" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/productionEnvironment/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/productionEnvironment/jni" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/productionEnvironment/rs" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestProductionEnvironment/res" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestProductionEnvironment/resources" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestProductionEnvironment/assets" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestProductionEnvironment/aidl" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestProductionEnvironment/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestProductionEnvironment/jni" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestProductionEnvironment/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/debug/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/debug/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/debug/assets" type="java-resource" />
@@ -116,18 +116,17 @@
     <orderEntry type="library" exported="" name="dagger-compiler-1.2.2" level="project" />
     <orderEntry type="library" exported="" name="support-v13-19.1.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="objenesis-2.0" level="project" />
-    <orderEntry type="library" exported="" name="hamcrest-core-1.1" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="hamcrest-core-1.1" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="mockito-core-1.9.5" level="project" />
-    <orderEntry type="library" exported="" name="dexmaker-mockito-1.1" level="project" />
-    <orderEntry type="library" exported="" name="hamcrest-library-1.1" level="project" />
-    <orderEntry type="library" exported="" name="mockito-core-1.10.8" level="project" />
-    <orderEntry type="library" exported="" name="objenesis-2.1" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="dexmaker-mockito-1.1" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="hamcrest-library-1.1" level="project" />
     <orderEntry type="library" exported="" name="play-services-4.3.23" level="project" />
     <orderEntry type="library" exported="" name="javax.inject-1" level="project" />
-    <orderEntry type="library" exported="" name="dexmaker-1.1" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="dexmaker-1.1" level="project" />
     <orderEntry type="library" exported="" name="retrofit-1.5.1" level="project" />
     <orderEntry type="library" exported="" name="okhttp-1.5.4" level="project" />
-    <orderEntry type="library" exported="" name="hamcrest-integration-1.1" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="hamcrest-integration-1.1" level="project" />
+    <orderEntry type="library" exported="" name="android-maps-utils-0.3.1" level="project" />
     <orderEntry type="library" exported="" name="javawriter-2.5.0" level="project" />
   </component>
 </module>

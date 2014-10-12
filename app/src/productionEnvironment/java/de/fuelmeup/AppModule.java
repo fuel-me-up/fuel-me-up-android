@@ -21,7 +21,6 @@ import dagger.Module;
 import dagger.Provides;
 import de.fuelmeup.data.DataModule;
 import de.fuelmeup.rest.ApiService;
-import de.fuelmeup.rest.MockApiService;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.converter.Converter;
@@ -82,13 +81,13 @@ public class AppModule {
                 .setRequestInterceptor(request -> {
                     request.addHeader("Accept", "application/json");
                     request.addHeader("Content-Type", "application/json");
-                }).
-                        setExecutors(AsyncTask.THREAD_POOL_EXECUTOR, AsyncTask.THREAD_POOL_EXECUTOR).
-                        setEndpoint(ApiService.FUEL_ME_UP_BASE_URL).
-                        setClient(okClient).setConverter(httpConverter).
-                        setLogLevel(logLevel).build();
+                })
+                .setExecutors(AsyncTask.THREAD_POOL_EXECUTOR, AsyncTask.THREAD_POOL_EXECUTOR)
+                .setEndpoint(ApiService.FUEL_ME_UP_BASE_URL)
+                .setClient(okClient).setConverter(httpConverter)
+                .setLogLevel(logLevel).build();
 
-        return new rest.create(ApiService.class);
+        return rest.create(ApiService.class);
     }
 
     private ResponseCache createResponseCache(Context context) {

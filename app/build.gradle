@@ -86,6 +86,7 @@ dependencies {
     compile 'com.squareup.dagger:dagger:1.2.2'
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
     compile 'com.jakewharton.timber:timber:2.4.+'
+    compile 'com.google.maps.android:android-maps-utils:0.3.1'
 
 
     androidTestCompile 'org.objenesis:objenesis:2.0'

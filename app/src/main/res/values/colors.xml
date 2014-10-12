@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="white_transparent">#f0ffffff</color>
+    <color name="fuelmeup_blue">#33B5E5</color>
+    <color name="fuelmeup_blue_dark">#0099CC</color>
 </resources>

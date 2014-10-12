@@ -4,13 +4,9 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import de.fuelmeup.R;
 import de.fuelmeup.ui.fragment.CarMapFragment;
-import de.fuelmeup.ui.fragment.SettingsFragment;
 
 /**
  * Main GUI activity.
