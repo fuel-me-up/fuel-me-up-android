@@ -167,6 +167,7 @@ public class CarMapFragment extends BaseMapFragment implements CarMapView {
             return;
         }
 
+        getMap().clear();
         clusterManager.clearItems();
 
         for (Marker marker : markers) {
@@ -177,6 +178,8 @@ public class CarMapFragment extends BaseMapFragment implements CarMapView {
             getMap().addMarker(mapMarker);*/
             clusterManager.addItem(new CarItem(marker.position.latitude, marker.position.longitude));
         }
+
+        clusterManager.cluster();
     }
 
     @Override
