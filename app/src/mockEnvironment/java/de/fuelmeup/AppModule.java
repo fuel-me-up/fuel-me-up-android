@@ -62,23 +62,24 @@ public class AppModule {
     }
 
     private ApiService getMockApiSerivce() {
-  /*      ApiService mockApiService = mock(ApiService.class);
+        //Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
+        ApiService mockApiService = mock(ApiService.class);
 
         List<Car> carList = new ArrayList<>();
         carList.add(new Car("Biedermannplatz 18", 14, new Coordinate(12, 12), "HH-IJ-1901", "car2go"));
-        carList.add(new Car("Biedermannplatz 18", 14, new Coordinate(12.5, 12.1), "HH-IJ-1901", "car2go"));
-        carList.add(new Car("Biedermannplatz 18", 14, new Coordinate(12.3, 12.2), "HH-IJ-1901", "car2go"));
+        carList.add(new Car("Biedermannplatz 18", 7, new Coordinate(12.5, 12.1), "HH-IJ-1901", "car2go"));
+        carList.add(new Car("Biedermannplatz 18", 3, new Coordinate(12.3, 12.2), "HH-IJ-1901", "car2go"));
 
         List<Car> otherCarList = new ArrayList<>();
-        carList.add(new Car("Biedermannplatz 18", 14, new Coordinate(12, 12), "HH-IJ-1901", "car2go"));
+        carList.add(new Car("Biedermannplatz 18", 33, new Coordinate(12, 12), "HH-IJ-1901", "car2go"));
 
 
-        when(mockApiService.fetchVehicles(anyString(), gt(20))).thenReturn(Observable.just(carList));
-        when(mockApiService.fetchVehicles(anyString(), leq(20))).thenReturn(Observable.just(otherCarList));
+        when(mockApiService.fetchVehicles(anyString(), leq(20))).thenReturn(Observable.just(carList));
+        when(mockApiService.fetchVehicles(anyString(), gt(20))).thenReturn(Observable.just(otherCarList));
 
         when(mockApiService.fetchGasStations(anyString())).thenReturn(Observable.just(new ArrayList<GasStation>()));
 
-*/
-        return new MockApiService();//mockApiService;
+
+        return mockApiService;
     }
 }
