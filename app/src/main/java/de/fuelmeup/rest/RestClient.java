@@ -23,23 +23,15 @@ public class RestClient {
     @Inject
     ApiService apiService;
 
-    public Subscription fetchCarsInHamburg(int maxFuelLevel, Activity activity, Action1<List<Car>> onComplete, Action1<Throwable> onError) {
-        return AndroidObservable.
-                bindActivity(activity, apiService.fetchVehicles("hamburg", maxFuelLevel)).
+    public Subscription fetchCars(int maxFuelLevel, Action1<List<Car>> onComplete, Action1<Throwable> onError) {
+        return apiService.fetchVehicles(maxFuelLevel).
                 observeOn(AndroidSchedulers.mainThread()).
                 subscribeOn(Schedulers.from(AsyncTask.THREAD_POOL_EXECUTOR)).
                 subscribe(onComplete, onError);
     }
 
-    public Subscription fetchCarsInHamburg(int maxFuelLevel, Action1<List<Car>> onComplete, Action1<Throwable> onError) {
-        return apiService.fetchVehicles("hamburg", maxFuelLevel).
-                observeOn(AndroidSchedulers.mainThread()).
-                subscribeOn(Schedulers.from(AsyncTask.THREAD_POOL_EXECUTOR)).
-                subscribe(onComplete, onError);
-    }
-
-    public Subscription fetchGasStationsInHamburg(Activity activity, Action1<List<GasStation>> onComplete, Action1<Throwable> onError) {
-        return AndroidObservable.bindActivity(activity, apiService.fetchGasStations("hamburg")).
+    public Subscription fetchGasStations(Activity activity, Action1<List<GasStation>> onComplete, Action1<Throwable> onError) {
+        return AndroidObservable.bindActivity(activity, apiService.fetchGasStations()).
                 observeOn(AndroidSchedulers.mainThread()).
                 subscribeOn(Schedulers.from(AsyncTask.THREAD_POOL_EXECUTOR)).
                 subscribe(onComplete, onError);

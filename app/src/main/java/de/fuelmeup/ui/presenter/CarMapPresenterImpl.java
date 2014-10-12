@@ -48,7 +48,8 @@ public class CarMapPresenterImpl implements CarMapPresenter {
     public void onResume() {
         final int initialFuelLevel = fuelLevelPreference.get(100);
         carMapView.setFuelLevel(initialFuelLevel);
-        restClient.fetchCarsInHamburg(initialFuelLevel, cars -> displayCars(cars), error -> { });
+        restClient.fetchCars(initialFuelLevel, cars -> displayCars(cars), error -> {
+        });
     }
 
     private void displayCars(List<Car> cars) {
@@ -82,7 +83,8 @@ public class CarMapPresenterImpl implements CarMapPresenter {
     @Override
     public void fuelLevelChanged(int level) {
         fuelLevelPreference.set(level);
-        restClient.fetchCarsInHamburg(level, cars -> displayCars(cars), error -> { });
+        restClient.fetchCars(level, cars -> displayCars(cars), error -> {
+        });
     }
 
     private void sendIntentForNavigation(LatLng location) {

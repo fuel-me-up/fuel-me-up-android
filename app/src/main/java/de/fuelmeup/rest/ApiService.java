@@ -15,8 +15,12 @@ public interface ApiService {
     public final String FUEL_ME_UP_BASE_URL = "http://fuel-me-up.herokuapp.com";
 
     @GET("/vehicles/{city}")
-    Observable<List<Car>> fetchVehicles(@Path("city") String city, @Query("max_fuel_level") int maxFuelLevel);
+    Observable<List<Car>> fetchVehiclesForCity(@Path("city") String city, @Query("max_fuel_level") int maxFuelLevel);
 
-    @GET("/gasstations/{city}")
-    Observable<List<GasStation>> fetchGasStations(@Path("city") String city);
+    @GET("/vehicles")
+    Observable<List<Car>> fetchVehicles(@Query("max_fuel_level") int maxFuelLevel);
+
+
+    @GET("/gasstations")
+    Observable<List<GasStation>> fetchGasStations();
 }
