@@ -10,8 +10,8 @@ import android.widget.TextView;
 import de.fuelmeup.R;
 
 public class LabelledSeekBar extends RelativeLayout implements SeekBar.OnSeekBarChangeListener {
-    private TextView tvLabelLeft;
-    private TextView tvLabelRight;
+    private TextView tvProgressLabel;
+    private TextView tvLabel;
     private SeekBar seekBar;
     private SeekBar.OnSeekBarChangeListener onSeekBarChangeListener;
     private String unit;
@@ -32,9 +32,9 @@ public class LabelledSeekBar extends RelativeLayout implements SeekBar.OnSeekBar
 
     private void initView(Context context, AttributeSet attrs) {
         inflate(context, R.layout.labelled_seek_bar, this);
-        seekBar = (SeekBar) findViewById(R.id.seek_bar);
-        tvLabelLeft = (TextView) findViewById(R.id.label_left);
-        tvLabelRight = (TextView) findViewById(R.id.label_right);
+        seekBar = (SeekBar) findViewById(R.id.seekBar);
+        tvProgressLabel = (TextView) findViewById(R.id.progressLabel);
+        tvLabel = (TextView) findViewById(R.id.label);
 
         seekBar.setOnSeekBarChangeListener(this);
 
@@ -47,11 +47,9 @@ public class LabelledSeekBar extends RelativeLayout implements SeekBar.OnSeekBar
                 R.styleable.LabelledSeekBar,
                 0, 0);
 
-        String labelLeft;
-        String labelRight;
+        String label;
         try {
-            labelLeft = a.getString(R.styleable.LabelledSeekBar_labelRight);
-            labelRight = a.getString(R.styleable.LabelledSeekBar_labelLeft);
+            label = a.getString(R.styleable.LabelledSeekBar_label);
             unit = a.getString(R.styleable.LabelledSeekBar_unit);
             if (unit == null) {
                 unit = "";
@@ -59,9 +57,7 @@ public class LabelledSeekBar extends RelativeLayout implements SeekBar.OnSeekBar
         } finally {
             a.recycle();
         }
-
-        tvLabelLeft.setText(labelLeft);
-        tvLabelRight.setText(labelRight);
+        tvLabel.setText(label);
     }
 
     public void setProgress(int progress) {
@@ -74,7 +70,7 @@ public class LabelledSeekBar extends RelativeLayout implements SeekBar.OnSeekBar
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        tvLabelRight.setText(progress + unit);
+        tvProgressLabel.setText(progress + unit);
 
         if (onSeekBarChangeListener != null) {
             onSeekBarChangeListener.onProgressChanged(seekBar, progress, fromUser);

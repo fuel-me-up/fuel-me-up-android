@@ -6,12 +6,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.SeekBar;
 
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -23,6 +21,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import de.fuelmeup.R;
+import de.fuelmeup.observable.SeekBarObservable;
 import de.fuelmeup.rest.model.Car;
 import de.fuelmeup.rest.model.GasStation;
 import de.fuelmeup.ui.model.Marker;
@@ -30,14 +29,13 @@ import de.fuelmeup.ui.model.MarkerMapper;
 import de.fuelmeup.ui.presenter.CarMapPresenter;
 import de.fuelmeup.ui.presenter.PresenterModule;
 import de.fuelmeup.ui.view.custom.LabelledSeekBar;
-import rx.android.observables.ViewObservable;
 
 /**
  * Fragment that displays cars in map.
  *
  * @author jonas
  */
-public class CarMapFragment extends BaseMapFragment implements CarMapView, SeekBar.OnSeekBarChangeListener {
+public class CarMapFragment extends BaseMapFragment implements CarMapView {
 
     private static final String LOG_TAG = CarMapFragment.class.getSimpleName();
     public static final int MAX_NO_OF_PROVIDERS = 2;
@@ -59,8 +57,11 @@ public class CarMapFragment extends BaseMapFragment implements CarMapView, SeekB
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        seekBarFuelLevel = (LabelledSeekBar) view.findViewById(R.id.seek_bar_fuel_level);
-        seekBarFuelLevel.setOnSeekBarChangeListener(this);
+        seekBarFuelLevel = (LabelledSeekBar) view.findViewById(R.id.seekBarFuelLevel);
+
+        // Observe seekBar tracking to inform presenter about fuel level
+        SeekBarObservable.startTrackingTouch(seekBarFuelLevel)
+                .subscribe(progress -> presenter.fuelLevelChanged(progress));
     }
 
     @Override
@@ -179,22 +180,5 @@ public class CarMapFragment extends BaseMapFragment implements CarMapView, SeekB
     @Override
     public void startViewIntentWithStringUri(String uri) {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(uri)));
-    }
-
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        // no action needed
-    }
-
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-        Log.d(LOG_TAG, "onStartTrackingTouch "+seekBar.getProgress());
-        // no action needed
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        Log.d(LOG_TAG, "onStopTrackingTouch "+seekBar.getProgress());
-        presenter.fuelLevelChanged(seekBar.getProgress());
     }
 }

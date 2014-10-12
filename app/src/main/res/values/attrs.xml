@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="LabelledSeekBar">
-        <attr name="labelLeft" format="string" />
-        <attr name="labelRight" format="string"/>
+        <attr name="label" format="string" />
         <attr name="unit" format="string"/>
     </declare-styleable>
 </resources>

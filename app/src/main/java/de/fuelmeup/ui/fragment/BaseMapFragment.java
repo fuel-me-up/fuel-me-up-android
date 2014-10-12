@@ -70,7 +70,7 @@ public abstract class BaseMapFragment extends BaseFragment {
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         final View view = inflater.inflate(provideLayout(), null);
         // Gets the MapView from the XML layout and creates it
-        mapView = (MapView) view.findViewById(R.id.map_view);
+        mapView = (MapView) view.findViewById(R.id.mapView);
 
         if (savedInstanceState != null) {
             mapView.onCreate((Bundle) savedInstanceState.getParcelable(KEY_GMAP_STATE));

@@ -5,20 +5,19 @@
     android:layout_height="match_parent" >
 
     <com.google.android.gms.maps.MapView
-        android:id="@+id/map_view"
+        android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <de.fuelmeup.ui.view.custom.LabelledSeekBar
-        android:id="@+id/seek_bar_fuel_level"
+        android:id="@+id/seekBarFuelLevel"
         android:background="@color/white_transparent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:layout_alignParentBottom="true"
         android:padding="@dimen/widget_padding_default"
-        custom:labelLeft="0%"
-        custom:labelRight="100%"
+        custom:label="Max fuel level"
         custom:unit="%"
         />
 
