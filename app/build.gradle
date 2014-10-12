@@ -13,6 +13,22 @@ def versionMajor = 1
 def versionMinor = 0
 def versionPatch = 0
 
+/*
+ * In release mode: read password from environment variable if available or console else
+ */
+def readPassword = { ->
+    def runTasks = gradle.startParameter.taskNames
+    def env = System.getenv();
+    if ('assembleProductionEnvironmentRelease' in runTasks ) {
+        if (env['RELEASE_KEYSTORE_PW']) {
+            return env['RELEASE_KEYSTORE_PW']
+        } else {
+            return System.console().readLine("\n\$ Enter keystore password: ")
+        }
+    } else {
+        return ""
+    }
+}
 
 android {
     compileSdkVersion 19
@@ -21,6 +37,18 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file('keystore/debug.keystore')
+        }
+        release {
+            storeFile file('keystore/release.keystore')
+            keyAlias 'fuelmeup'
+            storePassword readPassword()
+            keyPassword storePassword
+        }
     }
 
     defaultConfig {

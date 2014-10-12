@@ -12,7 +12,6 @@ import dagger.Module;
 import dagger.Provides;
 import de.fuelmeup.data.DataModule;
 import de.fuelmeup.rest.ApiService;
-import de.fuelmeup.rest.MockApiService;
 import de.fuelmeup.rest.model.Car;
 import de.fuelmeup.rest.model.Coordinate;
 import de.fuelmeup.rest.model.GasStation;
@@ -35,6 +34,7 @@ import static org.mockito.Mockito.when;
 )
 public class AppModule {
 
+    private static final String LOG_TAG = AppModule.class.getSimpleName();
     private final App app;
 
     public AppModule(App app) {
@@ -62,7 +62,6 @@ public class AppModule {
     }
 
     private ApiService getMockApiSerivce() {
-        //Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
         ApiService mockApiService = mock(ApiService.class);
 
         List<Car> carList = new ArrayList<>();

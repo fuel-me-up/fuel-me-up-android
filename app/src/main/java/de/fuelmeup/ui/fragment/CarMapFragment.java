@@ -3,7 +3,6 @@ package de.fuelmeup.ui.fragment;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
@@ -11,11 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -37,15 +32,18 @@ import de.fuelmeup.ui.presenter.PresenterModule;
  *
  * @author jonas
  */
-public class CarMapFragment extends BaseFragment implements OnMyLocationChangeListener, CarMapView {
+public class CarMapFragment extends BaseMapFragment implements CarMapView {
 
     private static final String LOG_TAG = CarMapFragment.class.getSimpleName();
-    public static final int DEFAULT_ZOOM_LEVEL = 13;
     public static final int MAX_NO_OF_PROVIDERS = 2;
-    private boolean notLocalized = true;
 
     @Inject
     CarMapPresenter presenter;
+
+    @Override
+    protected int provideLayout() {
+        return R.layout.fragment_car_map;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,11 +85,6 @@ public class CarMapFragment extends BaseFragment implements OnMyLocationChangeLi
     }
 
     private void initMap() {
-        getMap().getUiSettings().setMyLocationButtonEnabled(true);
-        getMap().setMyLocationEnabled(true);
-        if (notLocalized)
-            getMap().setOnMyLocationChangeListener(this);
-        notLocalized = false;
         getMap().setOnInfoWindowClickListener(marker -> {
             presenter.onMarkerClicked(MarkerMapper.fromMapsMarker(marker));
         });
@@ -130,31 +123,19 @@ public class CarMapFragment extends BaseFragment implements OnMyLocationChangeLi
         }
     }
 
-
-    @Override
-    public void onMyLocationChange(Location lastKnownLocation) {
-        CameraUpdate myLoc = CameraUpdateFactory.newCameraPosition(
-                new CameraPosition.Builder().target(new LatLng(lastKnownLocation.getLatitude(),
-                        lastKnownLocation.getLongitude())).zoom(DEFAULT_ZOOM_LEVEL).build()
-        );
-        getMap().moveCamera(myLoc);
-        getMap().setOnMyLocationChangeListener(null);
-    }
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 return true;
             case R.id.action_settings:
-                    PreferenceFragment settingsFragment = new SettingsFragment();
-                    FragmentTransaction transaction = getFragmentManager()
-                            .beginTransaction();
-                    transaction.replace(android.R.id.content, settingsFragment);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-                    return true;
+                PreferenceFragment settingsFragment = new SettingsFragment();
+                FragmentTransaction transaction = getFragmentManager()
+                        .beginTransaction();
+                transaction.replace(android.R.id.content, settingsFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
