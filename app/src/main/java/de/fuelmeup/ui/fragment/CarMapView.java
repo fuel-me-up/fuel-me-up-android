@@ -11,6 +11,7 @@ public interface CarMapView {
 
     public void drawMarkers(List<Marker> markers);
 
+    public void setFuelLevel(int fuelLevel);
 
     public void startViewIntentWithStringUri(String uri);
 }

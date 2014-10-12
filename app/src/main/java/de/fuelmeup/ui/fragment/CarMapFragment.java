@@ -6,9 +6,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.SeekBar;
 
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -26,19 +29,22 @@ import de.fuelmeup.ui.model.Marker;
 import de.fuelmeup.ui.model.MarkerMapper;
 import de.fuelmeup.ui.presenter.CarMapPresenter;
 import de.fuelmeup.ui.presenter.PresenterModule;
+import de.fuelmeup.ui.view.custom.LabelledSeekBar;
+import rx.android.observables.ViewObservable;
 
 /**
  * Fragment that displays cars in map.
  *
  * @author jonas
  */
-public class CarMapFragment extends BaseMapFragment implements CarMapView {
+public class CarMapFragment extends BaseMapFragment implements CarMapView, SeekBar.OnSeekBarChangeListener {
 
     private static final String LOG_TAG = CarMapFragment.class.getSimpleName();
     public static final int MAX_NO_OF_PROVIDERS = 2;
 
     @Inject
     CarMapPresenter presenter;
+    private LabelledSeekBar seekBarFuelLevel;
 
     @Override
     protected int provideLayout() {
@@ -48,6 +54,13 @@ public class CarMapFragment extends BaseMapFragment implements CarMapView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        seekBarFuelLevel = (LabelledSeekBar) view.findViewById(R.id.seek_bar_fuel_level);
+        seekBarFuelLevel.setOnSeekBarChangeListener(this);
     }
 
     @Override
@@ -147,6 +160,8 @@ public class CarMapFragment extends BaseMapFragment implements CarMapView {
             return;
         }
 
+        getMap().clear();
+
         for (Marker marker : markers) {
             MarkerOptions mapMarker = new MarkerOptions().position(
                     marker.position).title(marker.title)
@@ -157,7 +172,29 @@ public class CarMapFragment extends BaseMapFragment implements CarMapView {
     }
 
     @Override
+    public void setFuelLevel(int fuelLevel) {
+        seekBarFuelLevel.setProgress(fuelLevel);
+    }
+
+    @Override
     public void startViewIntentWithStringUri(String uri) {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(uri)));
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        // no action needed
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+        Log.d(LOG_TAG, "onStartTrackingTouch "+seekBar.getProgress());
+        // no action needed
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        Log.d(LOG_TAG, "onStopTrackingTouch "+seekBar.getProgress());
+        presenter.fuelLevelChanged(seekBar.getProgress());
     }
 }

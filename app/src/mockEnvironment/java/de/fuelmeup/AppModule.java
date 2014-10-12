@@ -19,6 +19,7 @@ import rx.Observable;
 
 import static org.mockito.AdditionalMatchers.gt;
 import static org.mockito.AdditionalMatchers.leq;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -70,7 +71,7 @@ public class AppModule {
         carList.add(new Car("Biedermannplatz 18", 3, new Coordinate(12.3, 12.2), "HH-IJ-1901", "car2go"));
 
         List<Car> otherCarList = new ArrayList<>();
-        carList.add(new Car("Biedermannplatz 18", 33, new Coordinate(12, 12), "HH-IJ-1901", "car2go"));
+        otherCarList.add(new Car("Biedermannplatz 18", 33, new Coordinate(12, 12), "HH-IJ-1901", "car2go"));
 
 
         when(mockApiService.fetchVehicles(anyString(), leq(20))).thenReturn(Observable.just(carList));
