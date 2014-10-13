@@ -16,7 +16,6 @@ import dagger.Provides;
 import de.fuelmeup.AppModule;
 import de.fuelmeup.preferences.FuelLevelPreference;
 import de.fuelmeup.preferences.IntegerPreference;
-import de.fuelmeup.preferences.PreferenceWrapper;
 import de.fuelmeup.resources.ResourceWrapper;
 import de.fuelmeup.rest.ApiService;
 import de.fuelmeup.ui.fragment.CarMapModule;
