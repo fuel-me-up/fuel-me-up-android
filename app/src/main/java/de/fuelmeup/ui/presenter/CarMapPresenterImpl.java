@@ -23,7 +23,7 @@ import de.fuelmeup.ui.model.Marker;
  */
 public class CarMapPresenterImpl implements CarMapPresenter {
 
-    private static final String MAPS_NAVIGATION_URL = "http://maps.google.com/maps?&daddr=%s,%s";
+    public static final String MAPS_NAVIGATION_URL = "http://maps.google.com/maps?&daddr=%s,%s";
 
     @Inject
     @CarMarkerTitleFormat

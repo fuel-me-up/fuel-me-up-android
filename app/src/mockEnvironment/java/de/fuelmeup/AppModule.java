@@ -19,8 +19,6 @@ import rx.Observable;
 
 import static org.mockito.AdditionalMatchers.gt;
 import static org.mockito.AdditionalMatchers.leq;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -36,9 +34,9 @@ import static org.mockito.Mockito.when;
 public class AppModule {
 
     private static final String LOG_TAG = AppModule.class.getSimpleName();
-    private final App app;
+    private final Application app;
 
-    public AppModule(App app) {
+    public AppModule(Application app) {
         this.app = app;
     }
 
@@ -58,7 +56,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public ApiService provideApiService(Context context) {
+    public ApiService provideApiService() {
         return getMockApiSerivce();
     }
 
@@ -74,10 +72,10 @@ public class AppModule {
         otherCarList.add(new Car("Biedermannplatz 18", 33, new Coordinate(12, 12), "HH-IJ-1901", "car2go"));
 
 
-        when(mockApiService.fetchVehicles(anyString(), leq(20))).thenReturn(Observable.just(carList));
-        when(mockApiService.fetchVehicles(anyString(), gt(20))).thenReturn(Observable.just(otherCarList));
+        when(mockApiService.fetchVehicles(leq(20))).thenReturn(Observable.just(carList));
+        when(mockApiService.fetchVehicles(gt(20))).thenReturn(Observable.just(otherCarList));
 
-        when(mockApiService.fetchGasStations(anyString())).thenReturn(Observable.just(new ArrayList<GasStation>()));
+        when(mockApiService.fetchGasStations()).thenReturn(Observable.just(new ArrayList<GasStation>()));
 
 
         return mockApiService;
