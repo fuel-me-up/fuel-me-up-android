@@ -7,9 +7,9 @@ class Modules {
     }
 
 
-    static Object[] list(App ngswApp) {
+    static Object[] list(App app) {
         return new Object[]{
-                new AppModule(ngswApp)
+                new AppModule(app)
         };
     }
 

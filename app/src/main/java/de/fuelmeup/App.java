@@ -32,7 +32,6 @@ public class App extends Application {
         // Timber logging for debug
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
-
         } else {
             // Do some release logging here
         }
@@ -54,13 +53,11 @@ public class App extends Application {
 
 
     public void inject(Object object) {
-
         objectGraph.inject(object);
     }
 
 
     public ObjectGraph getApplicationGraph() {
-
         return objectGraph;
     }
 }
