@@ -130,8 +130,8 @@ public class CarMapFragment extends BaseMapFragment implements CarMapView {
             return;
         }
 
-        getMap().clear();
         clusterManager.clearItems();
+        getMap().clear();
 
         for (Marker marker : markers) {
             CarItem carItem = new CarItem(marker.position, marker.title, marker.snippet, marker.markerHue);

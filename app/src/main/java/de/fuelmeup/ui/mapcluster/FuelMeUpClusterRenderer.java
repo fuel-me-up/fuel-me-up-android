@@ -3,7 +3,6 @@ package de.fuelmeup.ui.mapcluster;
 import android.content.Context;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
@@ -20,13 +19,11 @@ public class FuelMeUpClusterRenderer extends DefaultClusterRenderer<CarItem> {
     protected void onBeforeClusterItemRendered(CarItem item, MarkerOptions markerOptions) {
         super.onBeforeClusterItemRendered(item, markerOptions);
 
-        markerOptions.title(item.title).snippet(item.snippet).icon(BitmapDescriptorFactory.defaultMarker(item.markerHue));
+        markerOptions.title(item.title).snippet(item.snippet);
     }
 
     @Override
     protected void onClusterItemRendered(CarItem clusterItem, Marker marker) {
         super.onClusterItemRendered(clusterItem, marker);
-
-        //here you have access to the marker itself
     }
 }
