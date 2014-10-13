@@ -83,6 +83,7 @@ public abstract class BaseMapFragment extends BaseFragment {
         googleMap.setMyLocationEnabled(true);
         final UiSettings settings = googleMap.getUiSettings();
         settings.setMyLocationButtonEnabled(true);
+        settings.setZoomControlsEnabled(false);
 
         return view;
 

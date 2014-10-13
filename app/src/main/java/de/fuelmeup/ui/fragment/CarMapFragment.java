@@ -1,12 +1,10 @@
 package de.fuelmeup.ui.fragment;
 
 import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,7 +14,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.Arrays;
@@ -28,12 +25,13 @@ import de.fuelmeup.R;
 import de.fuelmeup.observable.SeekBarObservable;
 import de.fuelmeup.rest.model.Car;
 import de.fuelmeup.rest.model.GasStation;
+import de.fuelmeup.ui.mapcluster.CarItem;
+import de.fuelmeup.ui.mapcluster.FuelMeUpClusterRenderer;
 import de.fuelmeup.ui.model.Marker;
 import de.fuelmeup.ui.model.MarkerMapper;
 import de.fuelmeup.ui.presenter.CarMapPresenter;
 import de.fuelmeup.ui.presenter.PresenterModule;
 import de.fuelmeup.ui.view.custom.LabelledSeekBar;
-import rx.android.observables.AndroidObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -71,7 +69,7 @@ public class CarMapFragment extends BaseMapFragment implements CarMapView {
         SeekBarObservable.startTrackingTouch(seekBarFuelLevel)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.from(AsyncTask.THREAD_POOL_EXECUTOR))
-                        .subscribe(progress -> presenter.fuelLevelChanged(progress));
+                .subscribe(progress -> presenter.fuelLevelChanged(progress));
     }
 
     @Override
@@ -171,12 +169,8 @@ public class CarMapFragment extends BaseMapFragment implements CarMapView {
         clusterManager.clearItems();
 
         for (Marker marker : markers) {
-            /*MarkerOptions mapMarker = new MarkerOptions().position(
-                    marker.position).title(marker.title)
-                    .snippet(marker.snippet)
-                    .icon(BitmapDescriptorFactory.defaultMarker(marker.markerHue));
-            getMap().addMarker(mapMarker);*/
-            clusterManager.addItem(new CarItem(marker.position.latitude, marker.position.longitude));
+            CarItem carItem = new CarItem(marker.position, marker.title, marker.snippet, marker.markerHue);
+            clusterManager.addItem(carItem);
         }
 
         clusterManager.cluster();
@@ -198,23 +192,12 @@ public class CarMapFragment extends BaseMapFragment implements CarMapView {
 
         // Initialize the manager with the context and the map.
         clusterManager = new ClusterManager<>(getActivity(), getMap());
+        clusterManager.setRenderer(new FuelMeUpClusterRenderer(getActivity(), getMap(), clusterManager));
 
         // Point the map's listeners at the listeners implemented by the cluster
-        // manager.
         getMap().setOnCameraChangeListener(clusterManager);
         getMap().setOnMarkerClickListener(clusterManager);
     }
 
-    public class CarItem implements ClusterItem {
-        private final LatLng mPosition;
 
-        public CarItem(double lat, double lng) {
-            mPosition = new LatLng(lat, lng);
-        }
-
-        @Override
-        public LatLng getPosition() {
-            return mPosition;
-        }
-    }
 }
