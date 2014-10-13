@@ -15,7 +15,7 @@ import de.fuelmeup.resources.FuelLevelString;
 import de.fuelmeup.resources.StringResource;
 import de.fuelmeup.rest.RestClient;
 import de.fuelmeup.rest.model.Car;
-import de.fuelmeup.ui.fragment.CarMapView;
+import de.fuelmeup.ui.view.CarMapView;
 import de.fuelmeup.ui.model.Marker;
 
 /**
@@ -81,7 +81,7 @@ public class CarMapPresenterImpl implements CarMapPresenter {
     }
 
     @Override
-    public void fuelLevelChanged(int level) {
+    public void loadCarsForFuelLevel(int level) {
         fuelLevelPreference.set(level);
         restClient.fetchCars(level, cars -> displayCars(cars), error -> {
         });

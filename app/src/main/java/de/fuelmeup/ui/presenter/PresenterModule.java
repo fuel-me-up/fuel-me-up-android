@@ -8,5 +8,5 @@ import dagger.Module;
         injects = CarMapPresenterImpl.class
 )
 public class PresenterModule {
-
+    // Empty so far.
 }

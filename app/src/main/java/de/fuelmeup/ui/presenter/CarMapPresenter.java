@@ -11,5 +11,6 @@ public interface CarMapPresenter {
 
     public void onMarkerClicked(Marker marker);
 
-    public void fuelLevelChanged(int level);
+    public void loadCarsForFuelLevel(int level);
+
 }

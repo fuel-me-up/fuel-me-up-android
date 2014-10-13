@@ -1,9 +1,8 @@
 package de.fuelmeup.observable;
 
-import android.view.View;
 import android.widget.SeekBar;
 
-import de.fuelmeup.ui.view.custom.LabelledSeekBar;
+import de.fuelmeup.ui.component.custom.LabelledSeekBar;
 import rx.Observable;
 import rx.Subscriber;
 
