@@ -7,7 +7,7 @@
     <string name="address_label">Addresse: </string>
     <string name="name_label">Kennzeichen: </string>
     <string name="fuel_label">"Fuel level: "</string>
-    <string name="max_fuel_preference">maxFuelPrefDN</string>
+    <string name="max_fuel_preference">fuel_level</string>
     <string name="max_fuel_preference_caption">Set maximum fuel level</string>
 	<string name="default_max_fuel_level">25</string>
 	<string name="provider_and_plate">"%1$s: %2$s"</string>
