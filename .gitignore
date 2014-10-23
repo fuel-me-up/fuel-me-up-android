@@ -13,3 +13,4 @@ proguard-project.txt
 project.properties
 used_material.txt
 lint.xml
+app/keystore/fuelmeup-release.keystore
