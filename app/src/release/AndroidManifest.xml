@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="de.fuelmeup">
+
+    <application android:name=".App">
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyCTs-CC4o7XCkSnjHvqkbpgjP3V59FEt94" />
+    </application>
+</manifest>
