@@ -124,7 +124,7 @@ public class CarMapPresenterTest extends UnitTest {
         when(mockFuelLevelPreference.get(anyInt())).thenReturn(42);
         carMapPresenter.onResume();
 
-        verify(mockFuelLevelPreference).get(eq(100));
+        verify(mockFuelLevelPreference).get(eq(25));
 
         verify(mockCarMapView).setFuelLevel(42);
 

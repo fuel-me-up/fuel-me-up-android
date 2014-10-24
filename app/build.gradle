@@ -19,7 +19,7 @@ def versionPatch = 0
 def readPassword = { ->
     def runTasks = gradle.startParameter.taskNames
     def env = System.getenv();
-    if ('assembleProductionEnvironmentRelease' in runTasks ) {
+    if ('assembleProductionEnvironmentRelease' in runTasks) {
         if (env['RELEASE_KEYSTORE_PW']) {
             return env['RELEASE_KEYSTORE_PW']
         } else {
@@ -48,6 +48,14 @@ android {
             keyAlias 'fuelmeup'
             storePassword readPassword()
             keyPassword storePassword
+        }
+    }
+
+    buildTypes {
+        release {
+            runProguard false
+            signingConfig signingConfigs.release
+            zipAlign true
         }
     }
 
@@ -88,7 +96,6 @@ dependencies {
     compile 'com.jakewharton.timber:timber:2.4.+'
     compile 'com.google.maps.android:android-maps-utils:0.3.1'
 
-
 /*    androidTestCompile 'org.objenesis:objenesis:2.0'
     androidTestCompile 'org.hamcrest:hamcrest-core:1.1'
     androidTestCompile 'org.hamcrest:hamcrest-integration:1.1'
@@ -101,7 +108,7 @@ dependencies {
     mockEnvironmentCompile 'org.hamcrest:hamcrest-library:1.1'
     mockEnvironmentCompile 'org.mockito:mockito-core:1.10.8'
     mockEnvironmentCompile 'com.google.dexmaker:dexmaker:1.1'
-    mockEnvironmentCompile('com.google.dexmaker:dexmaker-mockito:1.1'){
+    mockEnvironmentCompile('com.google.dexmaker:dexmaker-mockito:1.1') {
         exclude group: 'org.mockito'
     }
 }
