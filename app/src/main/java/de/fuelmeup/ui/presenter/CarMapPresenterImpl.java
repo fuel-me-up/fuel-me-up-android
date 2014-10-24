@@ -46,7 +46,7 @@ public class CarMapPresenterImpl implements CarMapPresenter {
 
     @Override
     public void onResume() {
-        final int initialFuelLevel = fuelLevelPreference.get(100);
+        final int initialFuelLevel = fuelLevelPreference.get(25);
         carMapView.setFuelLevel(initialFuelLevel);
         restClient.fetchCars(initialFuelLevel, cars -> displayCars(cars), error -> {
         });
