@@ -53,9 +53,8 @@ android {
 
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             signingConfig signingConfigs.release
-            zipAlign true
         }
     }
 
@@ -85,15 +84,15 @@ android {
 
 dependencies {
     compile files('libs/android-async-http-1.4.3.jar')
-    compile 'com.google.android.gms:play-services:4.3.23'
+    compile 'com.google.android.gms:play-services:7.0.0'
+    compile 'pl.charmas.android:android-reactive-location:0.5@aar'
     compile 'com.squareup.retrofit:retrofit:1.5.1'
-    compile 'com.netflix.rxjava:rxjava-android:0.19.0'
+    compile 'io.reactivex:rxjava:1.0.8'
+    compile 'io.reactivex:rxandroid:0.24.0'
     compile 'com.squareup.okhttp:okhttp:1.5.4'
-    compile 'com.google.code.gson:gson:2.2.4'
-    compile 'com.android.support:support-v13:19.1.0'
+    compile 'com.google.code.gson:gson:2.3'
     compile 'com.squareup.dagger:dagger:1.2.2'
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
-    compile 'com.jakewharton.timber:timber:2.4.+'
     compile 'com.google.maps.android:android-maps-utils:0.3.1'
 
 /*    androidTestCompile 'org.objenesis:objenesis:2.0'
