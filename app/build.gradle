@@ -10,7 +10,7 @@ retrolambda {
 
 // Manifest version information!
 def versionMajor = 0
-def versionMinor = 8
+def versionMinor = 9
 def versionPatch = 0
 
 /*
