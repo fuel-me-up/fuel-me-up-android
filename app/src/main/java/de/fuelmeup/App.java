@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 
 import dagger.ObjectGraph;
-import timber.log.Timber;
 
 
 public class App extends Application {
@@ -28,13 +27,6 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         buildObjectGraphAndInject();
-
-        // Timber logging for debug
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
-        } else {
-            // Do some release logging here
-        }
     }
 
 
