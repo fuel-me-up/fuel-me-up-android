@@ -1,5 +1,7 @@
 package de.fuelmeup.ui.view;
 
+import android.location.Location;
+
 import java.util.List;
 
 import de.fuelmeup.ui.model.Marker;
@@ -14,4 +16,6 @@ public interface CarMapView {
     public void setFuelLevel(int fuelLevel);
 
     public void startViewIntentWithStringUri(String uri);
+
+    public void setMapPosition(Location location);
 }

@@ -2,6 +2,7 @@ package de.fuelmeup.ui.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -149,6 +150,11 @@ public class CarMapFragment extends BaseMapFragment implements CarMapView {
     @Override
     public void startViewIntentWithStringUri(String uri) {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(uri)));
+    }
+
+    @Override
+    public void setMapPosition(Location location) {
+        initMapPosition(location);
     }
 
     private void setUpClusterer() {
