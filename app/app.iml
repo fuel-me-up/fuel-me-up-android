@@ -11,8 +11,8 @@
         <option name="SELECTED_BUILD_VARIANT" value="mockEnvironmentDebug" />
         <option name="ASSEMBLE_TASK_NAME" value="assembleMockEnvironmentDebug" />
         <option name="COMPILE_JAVA_TASK_NAME" value="compileMockEnvironmentDebugSources" />
-        <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleMockEnvironmentDebugTest" />
         <option name="SOURCE_GEN_TASK_NAME" value="generateMockEnvironmentDebugSources" />
+        <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleMockEnvironmentDebugTest" />
         <option name="TEST_SOURCE_GEN_TASK_NAME" value="generateMockEnvironmentDebugTestSources" />
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
@@ -150,4 +150,3 @@
     <orderEntry type="library" exported="" name="javawriter-2.5.0" level="project" />
   </component>
 </module>
-
