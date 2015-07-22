@@ -9,8 +9,8 @@ retrolambda {
 }
 
 // Manifest version information!
-def versionMajor = 1
-def versionMinor = 0
+def versionMajor = 0
+def versionMinor = 9
 def versionPatch = 0
 
 /*
@@ -19,7 +19,7 @@ def versionPatch = 0
 def readPassword = { ->
     def runTasks = gradle.startParameter.taskNames
     def env = System.getenv();
-    if ('assembleProductionEnvironmentRelease' in runTasks ) {
+    if ('assembleProductionEnvironmentRelease' in runTasks) {
         if (env['RELEASE_KEYSTORE_PW']) {
             return env['RELEASE_KEYSTORE_PW']
         } else {
@@ -44,10 +44,17 @@ android {
             storeFile file('keystore/debug.keystore')
         }
         release {
-            storeFile file('keystore/release.keystore')
+            storeFile file('keystore/fuelmeup-release.keystore')
             keyAlias 'fuelmeup'
             storePassword readPassword()
             keyPassword storePassword
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
         }
     }
 
@@ -77,17 +84,16 @@ android {
 
 dependencies {
     compile files('libs/android-async-http-1.4.3.jar')
-    compile 'com.google.android.gms:play-services:4.3.23'
+    compile 'com.google.android.gms:play-services:7.0.0'
+    compile 'pl.charmas.android:android-reactive-location:0.5@aar'
     compile 'com.squareup.retrofit:retrofit:1.5.1'
-    compile 'com.netflix.rxjava:rxjava-android:0.19.0'
+    compile 'io.reactivex:rxjava:1.0.8'
+    compile 'io.reactivex:rxandroid:0.24.0'
     compile 'com.squareup.okhttp:okhttp:1.5.4'
-    compile 'com.google.code.gson:gson:2.2.4'
-    compile 'com.android.support:support-v13:19.1.0'
+    compile 'com.google.code.gson:gson:2.3'
     compile 'com.squareup.dagger:dagger:1.2.2'
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
-    compile 'com.jakewharton.timber:timber:2.4.+'
     compile 'com.google.maps.android:android-maps-utils:0.3.1'
-
 
 /*    androidTestCompile 'org.objenesis:objenesis:2.0'
     androidTestCompile 'org.hamcrest:hamcrest-core:1.1'
@@ -101,7 +107,7 @@ dependencies {
     mockEnvironmentCompile 'org.hamcrest:hamcrest-library:1.1'
     mockEnvironmentCompile 'org.mockito:mockito-core:1.10.8'
     mockEnvironmentCompile 'com.google.dexmaker:dexmaker:1.1'
-    mockEnvironmentCompile('com.google.dexmaker:dexmaker-mockito:1.1'){
+    mockEnvironmentCompile('com.google.dexmaker:dexmaker-mockito:1.1') {
         exclude group: 'org.mockito'
     }
 }

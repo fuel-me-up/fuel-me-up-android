@@ -19,7 +19,7 @@ import de.fuelmeup.preferences.IntegerPreference;
 import de.fuelmeup.resources.ResourceWrapper;
 import de.fuelmeup.rest.ApiService;
 import de.fuelmeup.ui.fragment.CarMapModule;
-import de.fuelmeup.ui.fragment.CarMapView;
+import de.fuelmeup.ui.view.CarMapView;
 import de.fuelmeup.ui.model.Marker;
 import de.fuelmeup.ui.presenter.CarMapPresenter;
 import de.fuelmeup.ui.presenter.CarMapPresenterImpl;
@@ -105,7 +105,7 @@ public class CarMapPresenterTest extends UnitTest {
     }
 
     public void testSetFuelLevel() {
-        carMapPresenter.fuelLevelChanged(30);
+        carMapPresenter.loadCarsForFuelLevel(30);
 
         verify(apiService).fetchVehicles(30);
 
@@ -124,7 +124,7 @@ public class CarMapPresenterTest extends UnitTest {
         when(mockFuelLevelPreference.get(anyInt())).thenReturn(42);
         carMapPresenter.onResume();
 
-        verify(mockFuelLevelPreference).get(eq(100));
+        verify(mockFuelLevelPreference).get(eq(25));
 
         verify(mockCarMapView).setFuelLevel(42);
 

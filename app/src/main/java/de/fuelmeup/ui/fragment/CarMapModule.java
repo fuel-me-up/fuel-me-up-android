@@ -10,6 +10,7 @@ import de.fuelmeup.data.DataModule;
 import de.fuelmeup.resources.ResourcesModule;
 import de.fuelmeup.ui.presenter.CarMapPresenter;
 import de.fuelmeup.ui.presenter.CarMapPresenterImpl;
+import de.fuelmeup.ui.view.CarMapView;
 
 @Module(
         complete = false,

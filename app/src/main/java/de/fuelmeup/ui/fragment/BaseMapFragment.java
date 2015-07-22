@@ -47,14 +47,6 @@ public abstract class BaseMapFragment extends BaseFragment {
 
     }
 
-    protected void setAutoLocateMode(final boolean on) {
-        this.autoLocateOnMap = on;
-    }
-
-    protected boolean isInAutoLocateMode() {
-        return autoLocateOnMap;
-    }
-
     @Override
     public void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -83,6 +75,8 @@ public abstract class BaseMapFragment extends BaseFragment {
         googleMap.setMyLocationEnabled(true);
         final UiSettings settings = googleMap.getUiSettings();
         settings.setMyLocationButtonEnabled(true);
+        settings.setZoomControlsEnabled(false);
+
 
         return view;
 

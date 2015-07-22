@@ -1,4 +1,4 @@
-package de.fuelmeup.ui.view.custom;
+package de.fuelmeup.ui.component.custom;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -62,6 +62,10 @@ public class LabelledSeekBar extends RelativeLayout implements SeekBar.OnSeekBar
 
     public void setProgress(int progress) {
         seekBar.setProgress(progress);
+    }
+
+    public int getProgress() {
+        return seekBar.getProgress();
     }
 
     public void setOnSeekBarChangeListener(SeekBar.OnSeekBarChangeListener onSeekBarChangeListener) {

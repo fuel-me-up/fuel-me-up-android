@@ -1,5 +1,9 @@
 package de.fuelmeup.ui.presenter;
 
+import android.content.Context;
+import android.location.Location;
+
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -15,8 +19,11 @@ import de.fuelmeup.resources.FuelLevelString;
 import de.fuelmeup.resources.StringResource;
 import de.fuelmeup.rest.RestClient;
 import de.fuelmeup.rest.model.Car;
-import de.fuelmeup.ui.fragment.CarMapView;
+import de.fuelmeup.ui.view.CarMapView;
 import de.fuelmeup.ui.model.Marker;
+import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
+import rx.Subscription;
+import rx.functions.Action1;
 
 /**
  * Created by jonas on 06.10.14.
@@ -24,6 +31,9 @@ import de.fuelmeup.ui.model.Marker;
 public class CarMapPresenterImpl implements CarMapPresenter {
 
     public static final String MAPS_NAVIGATION_URL = "http://maps.google.com/maps?&daddr=%s,%s";
+
+    @Inject
+    Context context;
 
     @Inject
     @CarMarkerTitleFormat
@@ -46,10 +56,14 @@ public class CarMapPresenterImpl implements CarMapPresenter {
 
     @Override
     public void onResume() {
-        final int initialFuelLevel = fuelLevelPreference.get(100);
+        final int initialFuelLevel = fuelLevelPreference.get(25);
         carMapView.setFuelLevel(initialFuelLevel);
         restClient.fetchCars(initialFuelLevel, cars -> displayCars(cars), error -> {
         });
+
+        ReactiveLocationProvider locationProvider = new ReactiveLocationProvider(context);
+        locationProvider.getLastKnownLocation()
+                .subscribe(location -> carMapView.setMapPosition(location));
     }
 
     private void displayCars(List<Car> cars) {
@@ -81,7 +95,7 @@ public class CarMapPresenterImpl implements CarMapPresenter {
     }
 
     @Override
-    public void fuelLevelChanged(int level) {
+    public void loadCarsForFuelLevel(int level) {
         fuelLevelPreference.set(level);
         restClient.fetchCars(level, cars -> displayCars(cars), error -> {
         });
